@@ -1,0 +1,39 @@
+html {
+  font-size: 5.33333vw;
+  //font-size: calc(100vw / 750 * 40);
+}
+
+@media screen and (min-width: 750px) {
+  html {
+    font-size: 40px;
+  }
+}
+
+body {
+  @apply max-w-[calc(750rem/40)] min-w-[calc(320rem/40)] mx-auto;
+}
+
+:root {
+  --minHeight: 100vh;
+}
+
+.container {
+  /*background-color: #FEBFAF;*/
+  min-height: var(--minHeight);
+}
+
+.txt-sub-7 {
+  @apply text-[#B6B6B6] text-[0.7rem];
+}
+
+.txt-gray-7 {
+  @apply text-[#6E7177] text-[0.7rem];
+}
+
+.txt-black-7 {
+  @apply text-[#292929] text-[0.7rem];
+}
+
+.txt-input-box {
+  @apply w-full py-[0.25rem] px-2 border border-transparent rounded text-black focus:outline-none focus:border-blue-500 placeholder:text-[0.7rem] placeholder:text-gray-400 placeholder:text-right;
+}
