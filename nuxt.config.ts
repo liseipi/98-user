@@ -5,9 +5,59 @@ export default defineNuxtConfig({
     ssr: false,
     experimental: {appManifest: false},
     modules: [
-        '@nuxtjs/tailwindcss'
+        '@nuxtjs/tailwindcss',
+        '@pinia/nuxt',
+        'pinia-plugin-persistedstate/nuxt',
     ],
+    build: {
+        transpile: ['pinia-plugin-persistedstate']
+    },
+    app: {
+        baseURL: '/html/',
+        head: {
+            title: '98-user',
+            meta: [
+                {charset: 'utf-8'},
+                {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'},
+            ],
+            link: [],
+            script: [
+                {src: '/html/js/jweixin-1.6.0.js'}
+            ]
+        }
+    },
     css: [
         '~/assets/css/style.scss'
     ],
+    runtimeConfig: {
+        public: {
+            apiBaseURL: 'https://hiv.xhwxpos.com',
+        },
+        app: {
+            apiBaseURL: 'https://hiv.xhwxpos.com',
+        }
+    },
+    nitro: {
+        // 用于客户端代理
+        devProxy: {
+            '/wxh5': {
+                target: 'https://hiv.xhwxpos.com/wxh5', // 这里是接口地址
+                changeOrigin: true,
+                // prependPath: true,
+                pathRewrite: {'^/wxh5': ''}
+            },
+            // '/uploads': {
+            //     target: 'https://hiv.xhwxpos.com/uploads', // 这里是接口地址
+            //     changeOrigin: true,
+            //     // prependPath: true,
+            //     pathRewrite: {'^/uploads': ''}
+            // }
+        },
+        // 该配置用于服务端请求转发
+        // routeRules: {
+        //   '/api/**': {
+        //     proxy: 'https://xxx.com/api/**'
+        //   }
+        // }
+    },
 })
