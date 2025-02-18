@@ -12,17 +12,38 @@ export default defineNuxtConfig({
     ],
     build: {
         transpile: ['pinia-plugin-persistedstate'],
-        transpile: [({ isDev, isClient, isServer }) => {
-          return {
-              app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-              chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-              css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
-              json: ({ isDev }) => isDev ? '[name].json' : '[name].json',
-              img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[ext]',
-              font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[ext]',
-              video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[ext]'
-          };
-        },]
+        rollupConfig: {
+            output: {
+                entryFileNames: '[name].js',
+                chunkFileNames: '[name].js',
+                assetFileNames: ({ name }) => {
+                    // Define naming convention based on the file type
+                    if (/\.css$/i.test(name)) {
+                        return '[name].css';
+                    }
+                    if (/\.(pngjpe?ggifsvgwebp)$/i.test(name)) {
+                        return 'img/[name][extname]';
+                    }
+                    if (/\.(woffwoff2eotttfotf)$/i.test(name)) {
+                        return 'fonts/[name][extname]';
+                    }
+                    if (/\.(mp4webmogv)$/i.test(name)) {
+                        return 'videos/[name][extname]';
+                    }
+                    // Fallback for other assets
+                    return '[name][extname]';
+                },
+            },
+            // output: {
+            //     app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+            //     chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+            //     css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
+            //     json: ({ isDev }) => isDev ? '[name].json' : '[name].json',
+            //     img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[ext]',
+            //     font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[ext]',
+            //     video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[ext]'
+            // },
+        },
     },
     app: {
         baseURL: '/98-user/',
