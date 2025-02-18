@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     },
     nitro: {
         output: {
-            dir: 'docs',
+            publicDir: 'docs',
         },
         // 用于客户端代理
         devProxy: {
