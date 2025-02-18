@@ -11,7 +11,18 @@ export default defineNuxtConfig({
         '@vant/nuxt'
     ],
     build: {
-        transpile: ['pinia-plugin-persistedstate']
+        transpile: ['pinia-plugin-persistedstate'],
+        transpile: [({ isDev, isClient, isServer }) => {
+          return {
+              app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+              chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
+              css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
+              json: ({ isDev }) => isDev ? '[name].json' : '[name].json',
+              img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[ext]',
+              font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[ext]',
+              video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[ext]'
+          };
+        },]
     },
     app: {
         baseURL: '/98-user/',
