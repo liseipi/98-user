@@ -24,7 +24,7 @@ export default defineNuxtConfig({
             ],
             link: [],
             script: [
-                {src: '/html/js/jweixin-1.6.0.js'}
+                {src: '/98-user/js/jweixin-1.6.0.js'}
             ]
         }
     },
