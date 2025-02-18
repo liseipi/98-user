@@ -15,7 +15,7 @@ const profile = profileStore().getProfile();
         <img :src="profile?.wxheadpic" alt="avatar" class="object-cover w-full h-full"/>
       </div>
       <div class="text-[#292929] text-[0.8rem] font-bold mb-6 text-center">
-        {{profile?.wxname}}
+        {{ profile?.wxname }}
       </div>
       <div class="bg-white rounded py-8 px-4 grid grid-cols-3 gap-6">
         <NuxtLink to="/searchUser">
@@ -26,48 +26,62 @@ const profile = profileStore().getProfile();
             <span class="text-[#626468] text-[0.65rem]">用户查询</span>
           </div>
         </NuxtLink>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_02.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        <NuxtLink to="/searchWorkOrder">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_02.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem]">工单明细</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem]">工单明细</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_03.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/createAccount">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_03.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem]">新增用户</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem]">新增用户</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_04.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/installationTable">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_04.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem] text-nowrap">安装智能水表</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem] text-nowrap">安装智能水表</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_05.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/replacementTable">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_05.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem] text-nowrap">更换机械水表</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem] text-nowrap">更换机械水表</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_06.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/searchDeviceStatus">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_06.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem] text-nowrap">设备状态查询</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem] text-nowrap">设备状态查询</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_07.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/searchArrearsUser">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_07.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem] text-nowrap">欠费用户查询</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem] text-nowrap">欠费用户查询</span>
-        </div>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_08.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        </NuxtLink>
+        <NuxtLink to="/searchCommandQueue">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_08.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem]">指令队列</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem]">指令队列</span>
-        </div>
+        </NuxtLink>
         <div class="flex flex-col items-center space-y-2">
           <div class="px-3">
             <img src="@/assets/image/service_09.png" class="w-[1.8rem] h-[2rem]" alt="service">

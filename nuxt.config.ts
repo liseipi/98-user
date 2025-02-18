@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'pinia-plugin-persistedstate/nuxt',
+        '@vant/nuxt'
     ],
     build: {
         transpile: ['pinia-plugin-persistedstate']
@@ -15,7 +16,7 @@ export default defineNuxtConfig({
     app: {
         baseURL: '/html/',
         head: {
-            title: '98-user',
+            title: '科汇直饮水',
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'},
@@ -38,6 +39,9 @@ export default defineNuxtConfig({
         }
     },
     nitro: {
+        output: {
+            dir: 'docs',
+        },
         // 用于客户端代理
         devProxy: {
             '/wxh5': {

@@ -1,4 +1,61 @@
 <script setup lang="ts">
+import {workTypes} from "~/composables/optionsData";
+import InputBox from "~/components/inputBox.vue";
+
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 新增用户` : '新增用户';
+  }
+})
+
+let formData = reactive({
+  areaid: '',
+  buildingid: '',
+  roomid: '',
+  bankaccount: '',
+  bankid: '',
+  bankusername: '',
+  devicecode: '',
+  devicereading: '',
+  installimage: '',
+  installposition: '',
+  installtype: '',
+  is_intelligence: '',
+  is_invoicing: '',
+  mealid: '',
+  notes: '',
+  powerstatus: '',
+  powertype: '',
+  reading: '',
+  usermobile: '',
+  username: '',
+  usertype: '',
+  property: ''
+})
+
+//获取区域
+const getAreaList = async () => {
+  let res = await useRequest('/wxh5/common/getAreaList');
+}
+
+//获取楼盘
+const getBuildingList = async () => {
+  let res = await useRequest('/wxh5/common/getBuildingList');
+}
+
+//获取
+// const getBuildingList = async () => {
+//   let res = await useRequest('/wxh5/common/getBuildingList');
+// }
+
+onMounted(() => {
+  getAreaList();
+})
+
+//区域ID变化时获取对应的楼盘数据
+watch(() => formData.areaid, (newValue) => {
+  getBuildingList(newValue);
+})
 
 </script>
 
@@ -9,24 +66,17 @@
       <div class="bg-white">
         <div class="w-full max-w-md px-4">
           <div class="py-6 space-y-4">
+            <select-box label="区域" required :options="workTypes" v-model="formData.areaid" placeholder="请选择区域"></select-box>
+            <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">用户编号</div>
               <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
             </div>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">楼盘 <span class="text-red-500">*</span></div>
-              <div class="txt-black-7">
-                请选择所在楼盘
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
+            <select-box label="楼盘" required :options="workTypes"></select-box>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
-              <div class="txt-gray-7">房号 <span class="text-red-500">*</span></div>
+              <div class="txt-gray-7">房号</div>
               <div class="txt-sub-7">请输入房号或门牌，从弹出列表中选择</div>
             </div>
             <hr class="border-t border-gray-200"/>
@@ -34,38 +84,21 @@
               <div class="txt-gray-7">门牌</div>
             </div>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">用户类型 <span class="text-red-500">*</span></div>
-              <div class="txt-black-7">
-                业户
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
+            <select-box label="用户类型" required placeholder="请选择用户类型" v-model="formData.usertype" :options="userTypes"></select-box>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">姓名 <span class="text-red-500">*</span></div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入姓名"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="姓名"
+                required
+                placeholder="请输入姓名"
+                v-model="formData.username"
+            ></InputBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">手机号码 <span class="text-red-500">*</span></div>
-              <div class="txt-black-7">
-                <input
-                  type="text"
-                  placeholder="请输入手机号码"
-                  class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="手机号码"
+                required
+                placeholder="请输入手机号码"
+                v-model="formData.username"
+            ></InputBox>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">套餐 <span class="text-red-500">*</span></div>
@@ -109,9 +142,9 @@
               <div class="txt-gray-7">银行账号</div>
               <div class="txt-black-7">
                 <input
-                  type="text"
-                  placeholder="请输入银行账户"
-                  class="txt-input-box"
+                    type="text"
+                    placeholder="请输入银行账户"
+                    class="txt-input-box"
                 />
               </div>
             </div>

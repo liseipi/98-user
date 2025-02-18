@@ -1,19 +1,20 @@
 <script setup lang="ts">
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 更换机械表` : '更换机械表';
+  }
+})
+
 
 </script>
 
 <template>
   <div class="container">
     <div class="mx-[0.8rem] py-4">
-      <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">填写个人信息</h3>
+      <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">填写资料信息</h3>
       <div class="bg-white">
         <div class="w-full max-w-md px-4">
           <div class="py-6 space-y-4">
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">用户编号</div>
-              <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
-            </div>
-            <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">楼盘 <span class="text-red-500">*</span></div>
               <div class="txt-black-7">
@@ -46,31 +47,35 @@
             </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
-              <div class="txt-gray-7">姓名 <span class="text-red-500">*</span></div>
+              <div class="txt-gray-7">上次抄表</div>
+            </div>
+            <hr class="border-t border-gray-200"/>
+            <div class="flex justify-between items-center">
+              <div class="txt-gray-7">原表读数 <span class="text-red-500">*</span></div>
               <div class="txt-black-7">
                 <input
                     type="text"
-                    placeholder="请输入姓名"
+                    placeholder="请输入"
                     class="txt-input-box"
                 />
               </div>
             </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
-              <div class="txt-gray-7">手机号码 <span class="text-red-500">*</span></div>
+              <div class="txt-gray-7">新表读数 <span class="text-red-500">*</span></div>
               <div class="txt-black-7">
                 <input
                   type="text"
-                  placeholder="请输入手机号码"
+                  placeholder="请输入"
                   class="txt-input-box"
                 />
               </div>
             </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
-              <div class="txt-gray-7">套餐 <span class="text-red-500">*</span></div>
+              <div class="txt-gray-7">更换类型 <span class="text-red-500">*</span></div>
               <div class="txt-black-7">
-                请选择套餐
+                请选择类型
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-4 h-4 inline-block">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
@@ -78,77 +83,24 @@
               </div>
             </div>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">开户日期</div>
-              <div class="txt-black-7">2024-11-25</div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">开户银行</div>
-              <div class="txt-black-7">
-                请选择开户银行
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
+            <div class="flex flex-col justify-start items-start">
+              <div class="text-[#6E7177] text-[0.7rem] py-2">水表照片</div>
+              <div class="flex items-center space-x-2">
+                <div class="relative w-16 h-16 rounded-lg border border-gray-300 flex items-center justify-center">
+                  <img src="https://via.placeholder.com/80" alt="placeholder" class="object-cover w-full h-full rounded-md"/>
+                  <div class="absolute -top-2 -right-2 bg-gray-200 rounded-full p-0.5 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 text-gray-700">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="w-16 h-16 rounded-lg border border-gray-300 flex items-center justify-center cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-gray-500">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </div>
               </div>
             </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">银行户名</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入银行账户名"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">银行账号</div>
-              <div class="txt-black-7">
-                <input
-                  type="text"
-                  placeholder="请输入银行账户"
-                  class="txt-input-box"
-                />
-              </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">水表读数</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入水表读数"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">是否开票</div>
-              <div class="txt-black-7">
-                否
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">备注</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入备注内容"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
           </div>
 
           <div class="py-4">
