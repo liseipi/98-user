@@ -14,7 +14,7 @@ export default defineNuxtConfig({
         transpile: ['pinia-plugin-persistedstate']
     },
     app: {
-        baseURL: '/98-user',
+        baseURL: '/98-user/',
         // baseURL: '/html/',
         head: {
             title: '科汇直饮水',
