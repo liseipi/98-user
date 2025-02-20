@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {profileStore} from "~/stores/profile";
 
-const res = await useRequest('/wxh5/Index/getConfig');
-profileStore().setProfile(res.data.userinfo as Profile);
-
-const profile = profileStore().getProfile();
+// const res = await useRequest('/wxh5/Index/getConfig');
+// profileStore().setProfile(res.data.userinfo as Profile);
+//
+// const profile = profileStore().getProfile();
 
 </script>
 

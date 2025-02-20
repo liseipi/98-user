@@ -18,11 +18,13 @@ const onSearch = async () => {
   }
 
   let res = await useRequest('/wxh5/staff/searchUser', {
-    method: 'post',
-    body: {
-      keyword
+    query: {
+      keyword: keyword.value,
     }
   });
+  if (res.data) {
+    list.value = res.data as SearchUserItem[];
+  }
 }
 
 </script>

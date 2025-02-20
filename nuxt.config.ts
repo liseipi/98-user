@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     ssr: false,
     target: 'static',
     experimental: {appManifest: false},
+    referrer: 'no-referrer',
     modules: [
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
@@ -47,8 +48,7 @@ export default defineNuxtConfig({
         },
     },
     app: {
-        baseURL: '/98-user/',
-        // baseURL: '/html/',
+        baseURL: '/html/',
         head: {
             title: '科汇直饮水',
             meta: [
@@ -57,7 +57,7 @@ export default defineNuxtConfig({
             ],
             link: [],
             script: [
-                {src: '/98-user/js/jweixin-1.6.0.js'}
+                {src: '/html/js/jweixin-1.6.0.js'}
             ]
         }
     },
@@ -66,26 +66,26 @@ export default defineNuxtConfig({
     ],
     runtimeConfig: {
         public: {
-            apiBaseURL: 'https://hiv.xhwxpos.com',
+            apiBaseURL: 'http://kh.xhwxpos.com',
         },
         app: {
-            apiBaseURL: 'https://hiv.xhwxpos.com',
+            apiBaseURL: 'http://kh.xhwxpos.com',
         }
     },
     nitro: {
         output: {
-            publicDir: 'docs',
+            publicDir: 'html',
         },
         // 用于客户端代理
         devProxy: {
             '/wxh5': {
-                target: 'https://hiv.xhwxpos.com/wxh5', // 这里是接口地址
+                target: 'http://kh.xhwxpos.com/wxh5', // 这里是接口地址
                 changeOrigin: true,
                 // prependPath: true,
                 pathRewrite: {'^/wxh5': ''}
             },
             // '/uploads': {
-            //     target: 'https://hiv.xhwxpos.com/uploads', // 这里是接口地址
+            //     target: 'https://kh.xhwxpos.com/uploads', // 这里是接口地址
             //     changeOrigin: true,
             //     // prependPath: true,
             //     pathRewrite: {'^/uploads': ''}

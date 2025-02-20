@@ -1,4 +1,14 @@
-export const workTypes = ['a', 'b', 'c'];
+export const workTypes = [
+    {
+        value: 1,
+        label: 'type A',
+    },
+    {
+        value: 2,
+        label: 'type B',
+    },
+];
+
 export const userTypes = [
     {
         id: 1,

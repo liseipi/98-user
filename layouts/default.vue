@@ -101,7 +101,7 @@ const init = async () => {
 }
 
 //初始化
-init();
+// init();
 
 
 </script>

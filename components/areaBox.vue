@@ -1,14 +1,7 @@
 <script setup lang="ts">
-interface Option {
-  value: any; // The actual value to be emitted (can be any type)
-  label: string; // The display text
-}
+import type {AreaItem} from "~/types/options";
 
 const props = defineProps({
-  options: {
-    type: Array<Option>,
-    required: true,
-  },
   placeholder: {
     type: String,
     default: '选择一个选项',
@@ -21,10 +14,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  name: {
-    type: String,
-    default: 'name',
-  },
   required: {
     type: Boolean,
     default: false,
@@ -33,26 +22,39 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // onSelectArea: { // 暂时不用
+  //   type: Function,
+  //   default: null, // It's optional
+  // },
 });
 
 const emit = defineEmits(['update:modelValue']);
 
 const isOpen = ref(false);
 
+let list = ref<AreaItem[]>([]);
+
 const selectedOption = computed({
   get: () => {
-    return props.options.find(option => option.value === props.modelValue) || null;
+    return list.value.find(option => option.id === props.modelValue) || null;
   },
-  set: (option: Option | null) => {
-    emit('update:modelValue', option ? option.value : null); // Use option.value
+  set: (option: AreaItem | null) => {
+    emit('update:modelValue', option ? option.id : null); // Use option.value
+    // if (option && props.onSelectArea) {  // 调用父组件函数，暂时不用
+    //   props.onSelectArea(option); // Pass the value to the parent function
+    // }
   }
 });
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
+
+  if (list.value.length == 0) {
+    getArea();
+  }
 };
 
-const selectOption = (option: Option) => {
+const selectOption = (option: AreaItem) => {
   selectedOption.value = option;  // Update the computed property
   isOpen.value = false;
 };
@@ -61,6 +63,14 @@ const clearSelection = () => {
   selectedOption.value = null;
   isOpen.value = false;
 };
+
+const getArea = async () => {
+  let res = await useRequest<AreaItem[]>('/wxh5/common/getAreaList');
+  console.log(res)
+  if (res.data) {
+    list.value = res.data as AreaItem[];
+  }
+}
 
 //处理点击组件外的任何元素
 const selectComponent = ref<HTMLElement | null>(null);
@@ -86,7 +96,7 @@ onUnmounted(() => {
 
     <div class="text-[#292929] text-[0.7rem] flex flex-row items-center justify-center cursor-pointer"
          @click="toggleDropdown">
-      <span>{{ selectedOption ? selectedOption.label : placeholder }}</span>
+      <span>{{ selectedOption ? selectedOption.name : placeholder }}</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
            stroke="currentColor" class="w-[1.3rem] h-[0.74rem] inline-block">
         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
@@ -104,12 +114,12 @@ onUnmounted(() => {
     <div v-if="isOpen"
          class="w-full absolute top-[100%] left-0 z-10 bg-white divide-y divide-gray-100 border border-gray-200 rounded-lg shadow-lg">
       <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
-        <li v-for="(option, index) in props.options"
+        <li v-for="(option, index) in list"
             :key="index"
             @click="selectOption(option)"
             :class="{ 'bg-gray-100': selectedOption === option }"
         >
-          <span class="block px-4 py-1 hover:bg-gray-100 text-[0.7rem]">{{ option.label }}</span>
+          <span class="block px-4 py-1 hover:bg-gray-100 text-[0.7rem]">{{ option.name }}</span>
         </li>
       </ul>
     </div>

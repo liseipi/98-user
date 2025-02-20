@@ -21,7 +21,8 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
             if (process.env.NODE_ENV === 'development') {
                 options.query = {
                     ...options.query,
-                    openid: openid.value,
+                    // openid: openid.value,
+                    key: 'be39d336d20d1c03ffef35ca39bc1c18',
                     debug: 1
                 };
             }
