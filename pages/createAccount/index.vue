@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {workTypes} from "~/composables/optionsData";
 import InputBox from "~/components/inputBox.vue";
+import AreaBox from "~/components/areaBox.vue";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -33,30 +34,6 @@ let formData = reactive({
   property: ''
 })
 
-//获取区域
-const getAreaList = async () => {
-  let res = await useRequest('/wxh5/common/getAreaList');
-}
-
-//获取楼盘
-const getBuildingList = async () => {
-  let res = await useRequest('/wxh5/common/getBuildingList');
-}
-
-//获取
-// const getBuildingList = async () => {
-//   let res = await useRequest('/wxh5/common/getBuildingList');
-// }
-
-onMounted(() => {
-  getAreaList();
-})
-
-//区域ID变化时获取对应的楼盘数据
-watch(() => formData.areaid, (newValue) => {
-  getBuildingList(newValue);
-})
-
 </script>
 
 <template>
@@ -66,14 +43,24 @@ watch(() => formData.areaid, (newValue) => {
       <div class="bg-white">
         <div class="w-full max-w-md px-4">
           <div class="py-6 space-y-4">
-            <select-box label="区域" required :options="workTypes" v-model="formData.areaid" placeholder="请选择区域"></select-box>
+            <AreaBox
+                v-model="formData.areaid"
+                required
+                label="区域"
+                placeholder="请选择区域"
+            />
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">用户编号</div>
               <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
             </div>
             <hr class="border-t border-gray-200"/>
-            <select-box label="楼盘" required :options="workTypes"></select-box>
+            <BuildingBox
+                v-model="formData.buildingid"
+                :area-id="formData.areaid"
+                label="楼盘"
+                placeholder="请选择楼盘"
+            />
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">房号</div>

@@ -82,6 +82,17 @@ watch(() => props.buildingId, () => {
   list.value = [];
 });
 
+// 输入框绑定的数据
+const searchQuery = ref('');
+// 搜索过滤
+const filteredList = computed(() => {
+  if (!searchQuery.value) {
+    return list.value; // 如果搜索框为空，显示所有项
+  }
+  return list.value.filter(item => item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+});
+
+
 //处理点击组件外的任何元素
 const selectComponent = ref<HTMLElement | null>(null);
 let clickHandler: (event: MouseEvent) => void;
@@ -123,9 +134,26 @@ onUnmounted(() => {
 
     <div v-if="isOpen"
          class="w-full absolute top-[100%] left-0 z-10 bg-white divide-y divide-gray-100 border border-gray-200 rounded-lg shadow-lg">
-      <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
-        <li v-for="(option, index) in list"
-            :key="index"
+      <div class="px-2 flex justify-between items-center border-b border-gray-200 py-2">
+        <div class="flex items-center text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+               class="w-5 h-5 text-gray-500 mr-2">
+            <path fill-rule="evenodd"
+                  d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
+                  clip-rule="evenodd"/>
+          </svg>
+          <span class="txt-black-7 mr-2 flex-1">
+            <input type="text" v-model="searchQuery" placeholder="搜索..." class="w-full border rounded px-2">
+          </span>
+          <button
+              class="bg-[#E3EEFF] text-[0.7rem] px-[0.57rem] text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            查询楼盘
+          </button>
+        </div>
+      </div>
+      <ul class="py-2 text-sm text-gray-700 max-h-64 overflow-y-auto" aria-labelledby="dropdownHoverButton">
+        <li v-for="option in filteredList"
+            :key="option.id"
             @click="selectOption(option)"
             :class="{ 'bg-gray-100': selectedOption === option }"
         >
