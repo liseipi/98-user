@@ -15,3 +15,13 @@ export interface RoomsItem {
     name: string;
     user_code: string;
 }
+
+export interface ComboItem {
+    id: number;
+    name: string;
+}
+
+export interface BankItem {
+    id: number;
+    name: string;
+}

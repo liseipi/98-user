@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {RoomsItem} from "~/types/options";
+import type {ComboItem} from "~/types/options";
 
 const props = defineProps({
   placeholder: {
@@ -12,10 +12,6 @@ const props = defineProps({
   },
   label: {
     type: String,
-    required: true,
-  },
-  buildingId: {
-    type: [String, Number, Boolean, Object, null],
     required: true,
   },
   required: {
@@ -32,31 +28,26 @@ const emit = defineEmits(['update:modelValue']);
 
 const isOpen = ref(false);
 
-let list = ref<RoomsItem[]>([]);
+let list = ref<ComboItem[]>([]);
 
 const selectedOption = computed({
   get: () => {
     return list.value.find(option => option.id === props.modelValue) || null;
   },
-  set: (option: RoomsItem | null) => {
+  set: (option: ComboItem | null) => {
     emit('update:modelValue', option ? option.id : null); // Use option.value
   }
 });
 
 const toggleDropdown = () => {
-  if (!props.buildingId) {
-    showToast('请先选择所在楼盘.');
-    return;
-  }
-
   isOpen.value = !isOpen.value;
 
   if (list.value.length == 0) {
-    getArea();
+    getCombo();
   }
 };
 
-const selectOption = (option: RoomsItem) => {
+const selectOption = (option: ComboItem) => {
   selectedOption.value = option;  // Update the computed property
   isOpen.value = false;
 };
@@ -66,21 +57,12 @@ const clearSelection = () => {
   isOpen.value = false;
 };
 
-const getArea = async () => {
-  let res = await useRequest<RoomsItem[]>('/wxh5/common/getRoomList', {
-    query: {
-      building_code: props.buildingId
-    }
-  });
+const getCombo = async () => {
+  let res = await useRequest<ComboItem[]>('/wxh5/common/getMealList');
   if (res.data) {
-    list.value = res.data as RoomsItem[];
+    list.value = res.data as ComboItem[];
   }
 }
-
-//监听当父组件buildingId变化时，就立即清list的数据
-watch(() => props.buildingId, () => {
-  list.value = [];
-});
 
 // 输入框绑定的数据
 const searchQuery = ref('');
@@ -91,7 +73,6 @@ const filteredList = computed(() => {
   }
   return list.value.filter(item => item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
-
 
 //处理点击组件外的任何元素
 const selectComponent = ref<HTMLElement | null>(null);
@@ -147,13 +128,13 @@ onUnmounted(() => {
           </span>
           <button
               class="bg-[#E3EEFF] text-[0.7rem] px-[0.57rem] text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-            查询房号
+            搜索套餐
           </button>
         </div>
       </div>
       <ul class="py-2 text-sm text-gray-700 max-h-64 overflow-y-auto" aria-labelledby="dropdownHoverButton">
         <li v-for="option in filteredList"
-            :key="option.id"
+            :key="option.value"
             @click="selectOption(option)"
             :class="{ 'bg-gray-100': selectedOption === option }"
         >

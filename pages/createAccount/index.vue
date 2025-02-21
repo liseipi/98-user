@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {workTypes} from "~/composables/optionsData";
+import {invoicingType, userType} from "~/composables/optionsData";
 import InputBox from "~/components/inputBox.vue";
 import AreaBox from "~/components/areaBox.vue";
+import {useToday} from "~/composables/states";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -22,7 +23,7 @@ let formData = reactive({
   installposition: '',
   installtype: '',
   is_intelligence: '',
-  is_invoicing: '',
+  is_invoicing: 0,
   mealid: '',
   notes: '',
   powerstatus: '',
@@ -31,8 +32,27 @@ let formData = reactive({
   usermobile: '',
   username: '',
   usertype: '',
-  property: ''
+  property: '',
+  createdate: useToday()
 })
+
+const onSubmit = async () => {
+  if (formData.areaid == '' || formData.buildingid == '' || formData.mealid == '') {
+    showToast({
+      type: 'fail',
+      message: '请填写必要项.'
+    });
+    return;
+  }
+
+  let res = await useRequest('/wxh5/staff/postAccount', {
+    method: 'POST',
+    body: formData,
+  });
+  if (res.status === '200') {
+    showToast("创建成功");
+  }
+}
 
 </script>
 
@@ -50,17 +70,18 @@ let formData = reactive({
                 placeholder="请选择区域"
             />
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">用户编号</div>
-              <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
-            </div>
-            <hr class="border-t border-gray-200"/>
             <BuildingBox
                 v-model="formData.buildingid"
                 :area-id="formData.areaid"
                 label="楼盘"
+                required
                 placeholder="请选择楼盘"
             />
+            <hr class="border-t border-gray-200"/>
+            <div class="flex justify-between items-center">
+              <div class="txt-gray-7">用户编号</div>
+              <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
+            </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">房号</div>
@@ -71,7 +92,13 @@ let formData = reactive({
               <div class="txt-gray-7">门牌</div>
             </div>
             <hr class="border-t border-gray-200"/>
-            <select-box label="用户类型" required placeholder="请选择用户类型" v-model="formData.usertype" :options="userTypes"></select-box>
+            <SelectBox
+                label="用户类型"
+                required
+                placeholder="请选择用户类型"
+                v-model="formData.usertype"
+                :options="userType">
+            </SelectBox>
             <hr class="border-t border-gray-200"/>
             <InputBox
                 label="姓名"
@@ -84,95 +111,71 @@ let formData = reactive({
                 label="手机号码"
                 required
                 placeholder="请输入手机号码"
-                v-model="formData.username"
+                v-model="formData.usermobile"
             ></InputBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">套餐 <span class="text-red-500">*</span></div>
-              <div class="txt-black-7">
-                请选择套餐
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
+            <ComboBox
+                v-model="formData.mealid"
+                required
+                label="套餐"
+                placeholder="请选择套餐"
+            />
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">开户日期</div>
-              <div class="txt-black-7">2024-11-25</div>
-            </div>
+            <DateBox label="开户日期" v-model="formData.createdate"/>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">开户银行</div>
-              <div class="txt-black-7">
-                请选择开户银行
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
+            <BankBox
+                v-model="formData.bankid"
+                label="开户银行"
+                placeholder="请选择开户银行"
+            />
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">银行户名</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入银行账户名"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="银行户名"
+                placeholder="请输入银行账户名"
+                v-model="formData.bankusername"
+            ></InputBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">银行账号</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入银行账户"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="银行账号"
+                placeholder="请输入银行账户"
+                v-model="formData.bankaccount"
+            ></InputBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">水表读数</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入水表读数"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="水表读数"
+                placeholder="请输入水表读数"
+                v-model="formData.reading"
+            ></InputBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">是否开票</div>
-              <div class="txt-black-7">
-                否
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-4 h-4 inline-block">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                </svg>
-              </div>
-            </div>
+            <SelectBox
+                label="是否开票"
+                required
+                placeholder="请选择开票"
+                v-model="formData.is_invoicing"
+                :options="invoicingType">
+            </SelectBox>
             <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">备注</div>
-              <div class="txt-black-7">
-                <input
-                    type="text"
-                    placeholder="请输入备注内容"
-                    class="txt-input-box"
-                />
-              </div>
-            </div>
+            <InputBox
+                label="备注"
+                placeholder="请输入备注内容"
+                v-model="formData.notes"
+            ></InputBox>
+            <!--            <div class="flex justify-between items-center">-->
+            <!--              <div class="txt-gray-7">备注</div>-->
+            <!--              <div class="txt-black-7">-->
+            <!--                <input-->
+            <!--                    type="text"-->
+            <!--                    placeholder="请输入备注内容"-->
+            <!--                    class="txt-input-box"-->
+            <!--                />-->
+            <!--              </div>-->
+            <!--            </div>-->
             <hr class="border-t border-gray-200"/>
           </div>
 
           <div class="py-4">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white text-[0.8rem] py-[0.55rem] px-8 rounded w-full">
+            <button @click="onSubmit"
+                    class="bg-blue-500 hover:bg-blue-700 text-white text-[0.8rem] py-[0.55rem] px-8 rounded w-full">
               提交
             </button>
           </div>
