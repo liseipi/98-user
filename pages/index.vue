@@ -82,12 +82,14 @@ import {profileStore} from "~/stores/profile";
             <span class="text-[#626468] text-[0.65rem]">指令队列</span>
           </div>
         </NuxtLink>
-        <div class="flex flex-col items-center space-y-2">
-          <div class="px-3">
-            <img src="@/assets/image/service_09.png" class="w-[1.8rem] h-[2rem]" alt="service">
+        <NuxtLink to="/createWorkOrder">
+          <div class="flex flex-col items-center space-y-2">
+            <div class="px-3">
+              <img src="@/assets/image/service_09.png" class="w-[1.8rem] h-[2rem]" alt="service">
+            </div>
+            <span class="text-[#626468] text-[0.65rem]">创建工单</span>
           </div>
-          <span class="text-[#626468] text-[0.65rem]">创建工单</span>
-        </div>
+        </NuxtLink>
       </div>
     </div>
 

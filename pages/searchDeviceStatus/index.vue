@@ -45,33 +45,33 @@ const onSearch = async () => {
 
         <div class="flex-1 mt-4" v-if="list">
           <h2 class="text-[#292929] text-[0.7rem] mb-2">查询结果</h2>
-          <div class="bg-white shadow-md rounded-lg p-4">
 
+          <div class="bg-white shadow-md rounded-lg p-4" v-for="(item, index) in list" :key="index">
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">最近联络时间</div>
-                <div class="txt-black-7">2024-12-14 03:31:46</div>
+                <div class="txt-black-7">{{item.lasttime}}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">脉冲比例</div>
-                <div class="txt-black-7">1</div>
+                <div class="txt-black-7">{{item.pulseratio}}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">讯号强度</div>
-                <div class="txt-black-7">13</div>
+                <div class="txt-black-7">{{item.signalstrength}}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">电池电压(V)</div>
-                <div class="txt-black-7">3.7</div>
+                <div class="txt-black-7">{{item.batteryvoltage}}</div>
               </div>
             </div>
 
@@ -80,8 +80,8 @@ const onSearch = async () => {
                 <div class="txt-gray-7">阀门状态/时间</div>
                 <div class="flex items-center space-x-2">
                   <div class="">
-                    <div class="txt-black-7">开阀/</div>
-                    <div class="txt-black-7">2024-12-14 03:31:46</div>
+                    <div class="txt-black-7">{{item.valvestatus==0 ? '关闭': '开启' }}</div>
+                    <div class="txt-black-7">{{item.updatetime}}</div>
                   </div>
                   <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="toggle" id="toggle"
@@ -97,9 +97,8 @@ const onSearch = async () => {
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">累计数</div>
                 <div class="flex items-center space-x-2">
-                  <div class="txt-black-7">1221.000</div>
-                  <button class="bg-[#E3EEFF] text-[#3789FF] text-[0.7rem] rounded-md px-[0.6rem] py-[0.23rem]">调表
-                  </button>
+                  <div class="txt-black-7">{{item.totalreading}}</div>
+                  <button class="bg-[#E3EEFF] text-[#3789FF] text-[0.7rem] rounded-md px-[0.6rem] py-[0.23rem]">调表</button>
                 </div>
               </div>
             </div>

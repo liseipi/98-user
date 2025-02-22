@@ -82,3 +82,49 @@ export const PowersStatus = [
         label: '断电'
     },
 ];
+
+export const CommandType = [
+    {
+        value: 1,
+        label: '不指定'
+    },
+    {
+        value: 2,
+        label: '待处理'
+    },
+    {
+        value: 3,
+        label: '处理中'
+    },
+    {
+        value: 4,
+        label: '已完成'
+    },
+    {
+        value: 5,
+        label: '失败'
+    },
+    {
+        value: 6,
+        label: '撤销'
+    },
+];
+
+export const DoneType = [
+    {
+        value: 1,
+        label: '不分类型'
+    },
+    {
+        value: 2,
+        label: '开阀'
+    },
+    {
+        value: 3,
+        label: '关阀'
+    },
+    {
+        value: 4,
+        label: '调表'
+    },
+];
