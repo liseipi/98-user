@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <NuxtLink to="/searchUser/userService">
+  <NuxtLink to="/searchUser/[userCode]">
     <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
       <div class="flex justify-between items-start mb-2">
         <div class="text-[#292929] text-[0.7rem]">用户编号：059000000003-0764</div>

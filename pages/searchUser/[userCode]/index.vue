@@ -1,5 +1,21 @@
 <script setup lang="ts">
+import type {UserInfo} from "~/types/searchUser";
 
+let route = useRoute()
+console.log(route.params.userCode);
+
+let userinfo = ref<UserInfo>(new UserInfo());
+const getUserInfo = async () => {
+  let res = await useRequest<UserInfo>('/wxh5/staff/UserDetails', {
+    query: {usercode: route.params.userCode},
+  });
+  console.log(res);
+  if (res.status === '200') {
+    userinfo.value = res.data;
+  }
+}
+
+getUserInfo();
 </script>
 
 <template>
@@ -13,35 +29,35 @@
           <div class="space-y-2">
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">用户编号</span>
-              <span class="txt-black-7">05900000007-0364</span>
+              <span class="txt-black-7">{{ userinfo.usercode }}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">房号</span>
-              <span class="txt-black-7">小星星倚云居张碧玲</span>
+              <span class="txt-black-7">{{ userinfo.roomname }}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">智能表号</span>
-              <span class="txt-black-7">50425306</span>
+              <span class="txt-black-7">{{ userinfo.intelligentcode }}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">阀门状态</span>
-              <span class="txt-black-7">开阀</span>
+              <span class="txt-black-7">{{ userinfo.valvestatus == '0' ? '关阀' : '开阀' }}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">用户</span>
-              <span class="txt-black-7">模版/13422055455</span>
+              <span class="txt-black-7">{{userinfo.username}}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">套餐</span>
-              <span class="txt-black-7">请标准套餐0.5元/升/180升/超0.4元/升</span>
+              <span class="txt-black-7">{{userinfo.mealname}}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">最近抄表</span>
-              <span class="txt-black-7">2024-12-08 00:38:12</span>
+              <span class="txt-black-7">{{userinfo.readingtime}}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">最近机械</span>
-              <span class="txt-black-7">146.970</span>
+              <span class="txt-black-7">{{userinfo.readingnum}}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <label class="txt-gray-7">本期机械</label>
@@ -62,31 +78,31 @@
       <div class="bg-white rounded p-4 mb-6">
         <div class="grid grid-cols-4 gap-4 text-center">
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_01.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_01.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">用户编辑</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_02.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_02.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询用水记录</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_03.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_03.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">账单查询</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_04.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_04.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询微信缴费流水</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_05.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_05.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询工单</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_06.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_06.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">机械表查询</span>
           </button>
           <button class="flex flex-col items-center">
-            <img src="@/assets/image/user_service_07.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
+            <img src="../../../assets/image/user_service_07.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">减免用水量</span>
           </button>
         </div>
@@ -135,7 +151,7 @@
 
 <style scoped>
 .container {
-  background-image: url("@/assets/image/head_bj.png");
+  background-image: url("assets/image/head_bj.png");
   background-color: #f0f5f8;
   background-position: top center;
   background-repeat: no-repeat;

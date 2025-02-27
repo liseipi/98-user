@@ -7,3 +7,16 @@ export interface SearchUserItem {
   username: string;
   usermobile: string;
 }
+
+export interface UserInfo  {
+  usercode: string;
+  buildingname: string;
+  roomname: string;
+  intelligentcode: string;
+  valvestatus: string;
+  username: string;
+  usermobile: string;
+  mealname: string;
+  readingtime: string;
+  readingnum: string;
+}

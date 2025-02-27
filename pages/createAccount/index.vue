@@ -3,6 +3,7 @@ import {invoicingType, userType} from "~/composables/optionsData";
 import InputBox from "~/components/inputBox.vue";
 import AreaBox from "~/components/areaBox.vue";
 import {useToday} from "~/composables/states";
+import RoomsBox from "~/components/roomsBox.vue";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -78,14 +79,16 @@ const onSubmit = async () => {
                 placeholder="请选择楼盘"
             />
             <hr class="border-t border-gray-200"/>
+            <RoomsBox
+                v-model="formData.roomid"
+                :building-id="formData.buildingid"
+                label="房号"
+                placeholder="请选择房号"
+            />
+            <hr/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">用户编号</div>
               <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">房号</div>
-              <div class="txt-sub-7">请输入房号或门牌，从弹出列表中选择</div>
             </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
