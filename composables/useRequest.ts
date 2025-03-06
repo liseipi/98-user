@@ -2,8 +2,12 @@ import type {ResponseData} from "~/types/global";
 
 export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
     const config = useRuntimeConfig()
+    const key = useCookie('key')
     const openid = useCookie('openid')
     // const accessToken = useCookie('accessToken');
+
+    //设定初始key的值
+    key.value = 'be39d336d20d1c03ffef35ca39bc1c18';
 
     const defaultOptions: UseFetch0ptions = {
         // baseURL: process.env.NODE_ENV === 'development' ? '' : '', //production or development
@@ -15,14 +19,14 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
             }
             options.params = {
                 ...options.params,
-                // openid: openid.value,
             }
-            options.query = {...options.query}
+            options.query = {
+                key: key.value,
+                openid: openid.value,
+                ...options.query
+            }
             if (process.env.NODE_ENV === 'development') {
                 options.query = {
-                    ...options.query,
-                    // openid: openid.value,
-                    key: 'be39d336d20d1c03ffef35ca39bc1c18',
                     debug: 1
                 };
             }

@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import {useRequest} from "~/composables/useRequest";
 import {useShareData} from "~/composables/states";
+import type {AuthType} from "~/types/user";
 
 const wxInitConfig = (shareData) => {
   wx.config({
@@ -63,45 +64,44 @@ const wxInitConfig = (shareData) => {
 }
 
 const init = async () => {
-  const key = useCookie('key');
   const openid = useCookie('openid');
+
   //无openid时
-  if (!openid.value || !key.value) {
+  if (!openid.value) {
     if (process.env.NODE_ENV === 'development') {
-      key.value = 'ow3r394ufj8f'
-      openid.value = 'o-WGWwlaQu7Xrko7hTfG85anK83g'
-    } else {
-      const res = await useRequest('/wxh5/Index/jsLogin', {
+        openid.value = 'o-WGWwrmdn9Wf1VwdfumyG6oB4Eo'
+      } else {
+      const res = await useRequest<AuthType>('/wxh5/user/auth', {
         params: {
           callbackurl: encodeURIComponent(window.location.href),
         }
       });
-      let response = toRaw(res.data.value);
-      let {data} = JSON.parse(response);
-      window.location.href = data.url
+      if (res.data) {
+        const response = res.data as AuthType;
+        window.location.href = response.url
+      }
       return;
     }
   } else {
-    //已经存在openid
-    const shareData = useShareData();
-    if (!shareData.value) {
-      let res = await useRequest('/wxh5/Index/getJsSignPackage', {
-        params: {
-          url: encodeURIComponent(window.location.href)
-        }
-      });
-      if (res.data) {
-        shareData.value = res.data;
-        wxInitConfig(shareData);
-      }
-    } else {
-      wxInitConfig(shareData);
-    }
+    //已经存在openid时，就处理分享接口
+    // const shareData = useShareData();
+    // if (!shareData.value) {
+    //   let res = await useRequest('/wxh5/Index/getJsSignPackage', {
+    //     params: {
+    //       url: encodeURIComponent(window.location.href)
+    //     }
+    //   });
+    //   if (res.data) {
+    //     shareData.value = res.data;
+    //     wxInitConfig(shareData);
+    //   }
+    // } else {
+    //   wxInitConfig(shareData);
+    // }
   }
 }
 
 //初始化
-// init();
-
+init();
 
 </script>
