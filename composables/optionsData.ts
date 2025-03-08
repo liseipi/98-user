@@ -31,6 +31,17 @@ export const invoicingType = [
     },
 ];
 
+export const isInstallType = [
+    {
+        value: 0,
+        label: '否'
+    },
+    {
+        value: 1,
+        label: '是'
+    },
+];
+
 export const InstallType = [
     {
         value: 1,

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: {enabled: false},
@@ -14,50 +13,29 @@ export default defineNuxtConfig({
     ],
     build: {
         transpile: ['pinia-plugin-persistedstate'],
-        rollupConfig: {
-            output: {
-                entryFileNames: '[name].js',
-                chunkFileNames: '[name].js',
-                assetFileNames: ({ name }) => {
-                    // Define naming convention based on the file type
-                    if (/\.css$/i.test(name)) {
-                        return '[name].css';
-                    }
-                    if (/\.(pngjpe?ggifsvgwebp)$/i.test(name)) {
-                        return 'img/[name][extname]';
-                    }
-                    if (/\.(woffwoff2eotttfotf)$/i.test(name)) {
-                        return 'fonts/[name][extname]';
-                    }
-                    if (/\.(mp4webmogv)$/i.test(name)) {
-                        return 'videos/[name][extname]';
-                    }
-                    // Fallback for other assets
-                    return '[name][extname]';
+        extractCSS: true,
+        terser: {
+            terserOptions: {
+                compress: {
+                    drop_console: true,
                 },
             },
-            // output: {
-            //     app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-            //     chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-            //     css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
-            //     json: ({ isDev }) => isDev ? '[name].json' : '[name].json',
-            //     img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[ext]',
-            //     font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[ext]',
-            //     video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[ext]'
-            // },
         },
     },
+    routeRules: {
+        '/': { prerender: true },
+    },
     app: {
-        baseURL: '/html/',
+        baseURL: '/user/',
         head: {
-            title: '科汇直饮水',
+            title: '科汇直饮水User',
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'},
             ],
             link: [],
             script: [
-                {src: '/html/js/jweixin-1.6.0.js'}
+                {src: '/user/js/jweixin-1.6.0.js'}
             ]
         }
     },
@@ -74,7 +52,11 @@ export default defineNuxtConfig({
     },
     nitro: {
         output: {
-            publicDir: 'html',
+            publicDir: 'user',
+        },
+        prerender: {
+            crawlLinks: false,
+            routes: ['/'],
         },
         // 用于客户端代理
         devProxy: {
@@ -97,5 +79,50 @@ export default defineNuxtConfig({
         //     proxy: 'https://xxx.com/api/**'
         //   }
         // }
+    },
+    modern: 'client',
+    performance: {
+        gzip: true,
+    },
+    // 优化 Vite 配置
+    vite: {
+        build: {
+            // 减少小文件数量
+            minify: 'terser', // 使用 terser 压缩
+            rollupOptions: {
+                output: {
+                    // 合并小文件
+                    chunkFileNames: 'assets/js/[name]-[hash].js',
+                    entryFileNames: 'assets/js/[name]-[hash].js',
+                    assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+                    manualChunks(id) {
+                        if (id.includes('node_modules')) {
+                            // 将所有 node_modules 合并到 vendor
+                            return 'vendor';
+                        }
+                        if (id.includes('pages/')) {
+                            const pageName = id.split('/pages/')[1].split('.')[0];
+                            return `page-${pageName}`;
+                        }
+                    },
+                },
+            },
+            // 限制 chunk 大小，合并小文件
+            chunkSizeWarningLimit: 1000, // 提高警告阈值
+        },
+        // 控制预构建
+        optimizeDeps: {
+            exclude: ['vant'], // 避免 Vant 全量预构建
+            include: [], // 手动指定需要预构建的依赖
+        },
+    },
+    // 限制组件自动导入
+    // components: {
+    //     global: false,
+    //     dirs: ['~/components'],
+    // },
+    // Vant 按需加载
+    vant: {
+        lazyload: true, // 尝试启用懒加载（视模块版本支持）
     },
 })

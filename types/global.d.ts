@@ -3,3 +3,7 @@ export interface ResponseData<T> {
     msg: string;
     data: T;
 }
+
+export interface UploadFile {
+    file_url: string
+}

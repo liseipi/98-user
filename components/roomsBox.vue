@@ -26,6 +26,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  status: {
+    type: Number,
+    default: -1
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -69,7 +73,8 @@ const clearSelection = () => {
 const getArea = async () => {
   let res = await useRequest<RoomsItem[]>('/wxh5/common/getRoomList', {
     query: {
-      building_code: props.buildingId
+      building_code: props.buildingId,
+      status: props.status,
     }
   });
   if (res.data) {
