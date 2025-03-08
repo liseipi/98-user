@@ -6,9 +6,6 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
     const openid = useCookie('openid')
     // const accessToken = useCookie('accessToken');
 
-    //设定初始key的值
-    key.value = 'be39d336d20d1c03ffef35ca39bc1c18';
-
     const defaultOptions: UseFetch0ptions = {
         // baseURL: process.env.NODE_ENV === 'development' ? '' : '', //production or development
         baseURL: config.public.baseURL,
@@ -21,12 +18,13 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
                 ...options.params,
             }
             options.query = {
+                ...options.query,
                 key: key.value,
-                openid: openid.value,
-                ...options.query
+                // openid: openid.value
             }
             if (process.env.NODE_ENV === 'development') {
                 options.query = {
+                    ...options.query,
                     debug: 1
                 };
             }

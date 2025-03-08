@@ -64,18 +64,19 @@ const wxInitConfig = (shareData) => {
 }
 
 const init = async () => {
+  const key = useCookie('key');
   const openid = useCookie('openid');
+
+  //设定初始key的值
+  key.value = 'be39d336d20d1c03ffef35ca39bc1c18';
 
   //无openid时
   if (!openid.value) {
     if (process.env.NODE_ENV === 'development') {
-        openid.value = 'o-WGWwrmdn9Wf1VwdfumyG6oB4Eo'
-      } else {
-      const res = await useRequest<AuthType>('/wxh5/user/auth', {
-        params: {
-          callbackurl: encodeURIComponent(window.location.href),
-        }
-      });
+      openid.value = 'o-WGWwrmdn9Wf1VwdfumyG6oB4Eo'
+    } else {
+      let url = `/wxh5/user/auth?companykey=${key.value}&callbackurl=${encodeURIComponent(window.location.href)}`;
+      const res = await useRequest<AuthType>(url);
       if (res.data) {
         const response = res.data as AuthType;
         window.location.href = response.url
@@ -84,20 +85,20 @@ const init = async () => {
     }
   } else {
     //已经存在openid时，就处理分享接口
-    // const shareData = useShareData();
-    // if (!shareData.value) {
-    //   let res = await useRequest('/wxh5/Index/getJsSignPackage', {
-    //     params: {
-    //       url: encodeURIComponent(window.location.href)
-    //     }
-    //   });
-    //   if (res.data) {
-    //     shareData.value = res.data;
-    //     wxInitConfig(shareData);
-    //   }
-    // } else {
-    //   wxInitConfig(shareData);
-    // }
+    const shareData = useShareData();
+    if (!shareData.value) {
+      let res = await useRequest('/wxh5/common/getShareSignPackage', {
+        params: {
+          url: encodeURIComponent(window.location.href)
+        }
+      });
+      if (res.data) {
+        shareData.value = res.data;
+        wxInitConfig(shareData);
+      }
+    } else {
+      wxInitConfig(shareData);
+    }
   }
 }
 
