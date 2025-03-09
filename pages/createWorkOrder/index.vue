@@ -145,16 +145,13 @@ const onSubmit = async () => {
               v-model="formData.mobile"
           />
           <hr class="border-t border-gray-200"/>
-          <div class="flex justify-between items-center">
-            <div class="text-[#6E7177] text-[0.7rem]">服务类型</div>
-            <div class="text-[#292929] text-[0.7rem]">
-              请选择服务类型
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                   stroke="currentColor" class="w-3 h-3 inline-block">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-              </svg>
-            </div>
-          </div>
+          <SelectBox
+              :options="workTypes"
+              v-model="formData.type"
+              label="工单类型"
+              name="type"
+              placeholder="请选择服务类型"
+          />
           <hr class="border-t border-gray-200"/>
           <InputBox
               label="需求描述"

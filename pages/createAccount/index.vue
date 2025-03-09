@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {InstallPosition, InstallType, invoicingType, PowersStatus, userType} from "~/composables/optionsData";
+import {InstallPosition, InstallType, IsInstallType, invoicingType, PowersStatus, userType} from "~/composables/optionsData";
 import InputBox from "~/components/inputBox.vue";
 import AreaBox from "~/components/areaBox.vue";
 import {useToday} from "~/composables/states";
@@ -112,7 +112,7 @@ const onSubmit = async () => {
 
   let res = await useRequest('/wxh5/staff/postAccount', {
     method: 'POST',
-    body: formData,
+    body: {...formData},
   });
   if (res.status === '200') {
     showToast("创建成功");
@@ -253,7 +253,7 @@ watch(() => formData.roomid, async (val) => {
                 label="是否安装智能水表"
                 placeholder="请选择是否安装"
                 v-model="formData.is_intelligence"
-                :options="isInstallType">
+                :options="IsInstallType">
             </SelectBox>
             <hr class="border-t border-gray-200"/>
             <SelectBox
