@@ -2,7 +2,7 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: {enabled: false},
     ssr: false,
-    target: 'static',
+    // target: 'static',
     experimental: {appManifest: false},
     referrer: 'no-referrer',
     modules: [
@@ -14,13 +14,13 @@ export default defineNuxtConfig({
     build: {
         transpile: ['pinia-plugin-persistedstate'],
         extractCSS: true,
-        terser: {
-            terserOptions: {
-                compress: {
-                    drop_console: true,
-                },
-            },
-        },
+        // terser: {
+        //     terserOptions: {
+        //         compress: {
+        //             drop_console: true,
+        //         },
+        //     },
+        // },
     },
     routeRules: {
         '/': { prerender: true },
@@ -54,10 +54,10 @@ export default defineNuxtConfig({
         output: {
             publicDir: 'user',
         },
-        prerender: {
-            crawlLinks: false,
-            routes: ['/'],
-        },
+        // prerender: {
+        //     crawlLinks: false,
+        //     routes: ['/'],
+        // },
         // 用于客户端代理
         devProxy: {
             '/wxh5': {
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
         //   }
         // }
     },
-    modern: 'client',
+    // modern: 'client',
     performance: {
         gzip: true,
     },
