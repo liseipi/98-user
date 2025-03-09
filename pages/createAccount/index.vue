@@ -16,6 +16,7 @@ let formData = reactive({
   areaid: '',
   buildingid: '',
   roomid: '',
+  usercode: '',
   bankaccount: '',
   bankid: '',
   bankusername: '',
@@ -118,8 +119,17 @@ const onSubmit = async () => {
   }
 }
 
-watch(() => formData.roomid, (val) => {
-  console.log(val);
+watch(() => formData.roomid, async (val) => {
+  if (val) {
+    let res = await useRequest<{usercode: string}>('/wxh5/staff/createUserCode', {
+      query: {
+        roomid: val
+      }
+    });
+    if(res.status === '200') {
+      formData.usercode = res.data.usercode
+    }
+  }
 })
 
 </script>
@@ -156,7 +166,15 @@ watch(() => formData.roomid, (val) => {
             <hr/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">用户编号</div>
-              <div class="txt-sub-7">选择房号后自动生成，无需输入</div>
+              <div class="txt-sub-7">
+                <input
+                  type="text"
+                  placeholder="选择房号后自动生成，无需输入"
+                  v-model="formData.usercode"
+                  readonly
+                  class="txt-input-box focus:text-left"
+                >
+              </div>
             </div>
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
