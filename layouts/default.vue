@@ -73,7 +73,7 @@ const init = async () => {
   //无openid时
   if (!openid.value) {
     if (process.env.NODE_ENV === 'development') {
-      openid.value = 'o-WGWwrmdn9Wf1VwdfumyG6oB4Eo'
+      openid.value = 'o-WGWwvPt3UuObAMB7iJaAxt6SGY'
     } else {
       let url = `/wxh5/user/auth?companykey=${key.value}&callbackurl=${encodeURIComponent(window.location.href)}`;
       const res = await useRequest<AuthType>(url);

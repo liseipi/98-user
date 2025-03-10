@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import {profileStore} from "~/stores/profile";
+import type {Profile} from "~/types/user";
 
-// const res = await useRequest('/wxh5/Index/getConfig');
-// profileStore().setProfile(res.data.userinfo as Profile);
-//
-// const profile = profileStore().getProfile();
+let user = ref<Profile | null>();
+
+const getUserInfo = async () => {
+  const res = await useRequest('/wxh5/staff/getIndex');
+  if (res.status === 0) {
+    user.value = res.data as Profile;
+    profileStore().setProfile(res.data as Profile);
+  }
+}
+
+onMounted(() => {
+  user.value = profileStore().getProfile();
+  getUserInfo();
+})
 
 </script>
 
@@ -12,10 +23,10 @@ import {profileStore} from "~/stores/profile";
   <div class="container">
     <div class="mx-[0.8rem] py-4">
       <div class="relative w-[3rem] h-[3rem] rounded-full bg-gray-200 mt-[2.65rem] mb-2 mx-auto overflow-hidden">
-        <img :src="profile?.wxheadpic" alt="avatar" class="object-cover w-full h-full"/>
+        <img :src="user?.wxheadpic" alt="avatar" class="object-cover w-full h-full"/>
       </div>
       <div class="text-[#292929] text-[0.8rem] font-bold mb-6 text-center">
-        {{ profile?.wxname }}
+        {{ user?.wxname }}
       </div>
       <div class="bg-white rounded py-8 px-4 grid grid-cols-3 gap-6">
         <NuxtLink to="/searchUser">
