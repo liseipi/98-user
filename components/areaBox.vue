@@ -22,6 +22,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  init: {
+    type: Boolean,
+    default: false,
+  }
   // onSelectArea: { // 暂时不用
   //   type: Function,
   //   default: null, // It's optional
@@ -96,6 +100,11 @@ onUnmounted(() => {
   document.removeEventListener('click', clickHandler);
 });
 
+onMounted(() => {
+  if (props.init && list.value.length == 0) {
+    getArea();
+  }
+})
 </script>
 
 <template>

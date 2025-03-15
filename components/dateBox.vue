@@ -45,7 +45,7 @@ const props = defineProps({
 });
 const showPopup = ref(false);
 const selectedDate = ref(null);
-const currentDate = ref([new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]);
+const currentDate = ref();
 const minDate = new Date(new Date().getFullYear() - 10, 0, 1);
 const maxDate = new Date(new Date().getFullYear() + 10, 11, 31); // or Date.now() for today
 
@@ -68,12 +68,14 @@ const onCancel = () => {
 };
 
 const formatDate = (date) => {
-  // const year = date.getFullYear();
-  // const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-  // const day = String(date.getDate()).padStart(2, '0');
   return `${date[0]}-${date[1]}-${date[2]}`;
 };
 
-import {defineEmits} from 'vue' // Add this line
-const emit = defineEmits(['update:modelValue']) // Add this line
+const emit = defineEmits(['update:modelValue']);
+
+watch(() => props.modelValue, (val) => {
+  currentDate.value = val
+      ? [new Date(val).getFullYear(), new Date(val).getMonth() + 1, new Date(val).getDate()]
+      : [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]
+})
 </script>

@@ -29,6 +29,10 @@ const props = defineProps({
   status: {
     type: Number,
     default: -1
+  },
+  init: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -85,6 +89,11 @@ const getArea = async () => {
 //监听当父组件buildingId变化时，就立即清list的数据
 watch(() => props.buildingId, () => {
   list.value = [];
+
+  //判断初始化
+  if (props.buildingId && props.init && list.value.length == 0) {
+    getArea();
+  }
 });
 
 // 输入框绑定的数据

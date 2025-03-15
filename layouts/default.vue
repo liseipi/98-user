@@ -1,5 +1,5 @@
 <template>
-  <slot/>
+  <NuxtPage keepalive />
 </template>
 
 <script setup lang="ts">

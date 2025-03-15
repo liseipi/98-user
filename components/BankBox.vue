@@ -22,6 +22,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  init: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -88,6 +92,12 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', clickHandler);
 });
+
+onMounted(() => {
+  if (props.init && list.value.length == 0) {
+    getCombo();
+  }
+})
 
 </script>
 

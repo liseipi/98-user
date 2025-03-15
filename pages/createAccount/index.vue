@@ -32,7 +32,7 @@ let formData = reactive({
   installimage: '',
   installposition: '',
   installtype: '',
-  is_intelligence: 1,
+  is_intelligence: 0,
   is_invoicing: 0,
   mealid: '',
   notes: '',
@@ -133,7 +133,7 @@ watch(() => formData.roomid, async (val) => {
         roomid: val
       }
     });
-    if (res.status === '200') {
+    if (res.status === 0) {
       formData.usercode = res.data.usercode
     }
   }
@@ -182,10 +182,6 @@ watch(() => formData.roomid, async (val) => {
                     class="txt-input-box focus:text-left"
                 >
               </div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">门牌</div>
             </div>
             <hr class="border-t border-gray-200"/>
             <SelectBox

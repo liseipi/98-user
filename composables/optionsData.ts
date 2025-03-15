@@ -1,4 +1,16 @@
+//工单类型
 export const workTypes = [
+    {
+        value: 1,
+        label: 'type A',
+    },
+    {
+        value: 2,
+        label: 'type B',
+    },
+];
+//工单状态
+export const workStatueTypes = [
     {
         value: 1,
         label: 'type A',
@@ -20,6 +32,7 @@ export const userType = [
     },
 ];
 
+//是否开票
 export const invoicingType = [
     {
         value: 0,
@@ -31,6 +44,7 @@ export const invoicingType = [
     },
 ];
 
+//是否安装智能水表
 export const IsInstallType = [
     {
         value: 0,
@@ -139,3 +153,31 @@ export const DoneType = [
         label: '调表'
     },
 ];
+
+//用水减免类型
+export const ReliefReasonType = [
+    {
+        value: 1,
+        label: '用水故障'
+    },
+    {
+        value: 2,
+        label: '阀门没开'
+    },
+    {
+        value: 3,
+        label: '读数不准'
+    },
+    {
+        value: 4,
+        label: '其他'
+    }
+]
+
+//⼊账去向
+export const DepositDestinationType = [
+    {
+        value: 1,
+        label: '客户'
+    }
+]

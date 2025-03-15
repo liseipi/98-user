@@ -26,6 +26,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  init: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -80,6 +84,11 @@ const getArea = async () => {
 //监听当父组件areaId变化时，就立即清list的数据
 watch(() => props.areaId, () => {
   list.value = [];
+
+  //判断初始化
+  if (props.areaId && props.init && list.value.length == 0) {
+    getArea();
+  }
 });
 
 // 输入框绑定的数据
