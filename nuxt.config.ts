@@ -18,23 +18,23 @@ export default defineNuxtConfig({
             output: {
                 entryFileNames: '[name].js',
                 chunkFileNames: '[name].js',
-                assetFileNames: ({ name }) => {
-                    // Define naming convention based on the file type
-                    if (/\.css$/i.test(name)) {
-                        return '[name].css';
-                    }
-                    if (/\.(pngjpe?ggifsvgwebp)$/i.test(name)) {
-                        return 'img/[name][extname]';
-                    }
-                    if (/\.(woffwoff2eotttfotf)$/i.test(name)) {
-                        return 'fonts/[name][extname]';
-                    }
-                    if (/\.(mp4webmogv)$/i.test(name)) {
-                        return 'videos/[name][extname]';
-                    }
-                    // Fallback for other assets
-                    return '[name][extname]';
-                },
+                // assetFileNames: ({ name }) => {
+                //     // Define naming convention based on the file type
+                //     if (/\.css$/i.test(name)) {
+                //         return '[name].css';
+                //     }
+                //     if (/\.(pngjpe?ggifsvgwebp)$/i.test(name)) {
+                //         return 'img/[name][extname]';
+                //     }
+                //     if (/\.(woffwoff2eotttfotf)$/i.test(name)) {
+                //         return 'fonts/[name][extname]';
+                //     }
+                //     if (/\.(mp4webmogv)$/i.test(name)) {
+                //         return 'videos/[name][extname]';
+                //     }
+                //     // Fallback for other assets
+                //     return '[name][extname]';
+                // },
             },
             // output: {
             //     app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     app: {
         baseURL: '/user/',
         head: {
-            title: '科汇直饮水User平台',
+            title: '科汇直饮水员工端',
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'},

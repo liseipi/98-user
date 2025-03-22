@@ -42,7 +42,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded p-4 grid grid-cols-1 gap-y-4">
         <date-box label="创建开始时间" v-model="formData.starttime"/>
@@ -124,13 +124,3 @@ const onSubmit = async () => {
 
   </div>
 </template>
-
-<style scoped>
-.container {
-  background-image: url("@/assets/image/head_bj.png");
-  background-color: #f0f5f8;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-</style>

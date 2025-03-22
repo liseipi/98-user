@@ -103,7 +103,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-blue-color">
     <div class="h-4"></div>
     <div class="mx-[0.8rem]">
       <div class="bg-white p-8 rounded-lg">
@@ -226,9 +226,3 @@ const onSubmit = async () => {
 
   </div>
 </template>
-
-<style scoped>
-.container {
-  background-color: #f0f5f8;
-}
-</style>

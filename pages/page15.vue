@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded overflow-x-auto">
         <table class="w-full table-auto border-collapse">
@@ -51,13 +51,3 @@
 
   </div>
 </template>
-
-<style scoped>
-.container {
-  background-image: url("@/assets/image/head_bj.png");
-  background-color: #f0f5f8;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-</style>

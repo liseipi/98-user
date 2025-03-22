@@ -39,8 +39,13 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
     }
 
     return new Promise<ResponseData<T>>((resolve, reject) => {
-        useFetch(url, Object.assign(defaultOptions, opts)).then((res) => {
-            resolve(res.data.value as ResponseData<T>);
+        //useFetch / $fetch
+        $fetch(url, Object.assign(defaultOptions, opts)).then((res) => {
+            //useFetch
+            //resolve(res.data.value as ResponseData<T>);
+
+            //$fetch
+            resolve(res as ResponseData<T>);
         }).catch((err) => {
             reject(err);
         });

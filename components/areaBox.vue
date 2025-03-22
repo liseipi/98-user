@@ -25,6 +25,10 @@ const props = defineProps({
   init: {
     type: Boolean,
     default: false,
+  },
+  readonly: {
+    type: Boolean,
+    default: false,
   }
   // onSelectArea: { // 暂时不用
   //   type: Function,
@@ -51,6 +55,9 @@ const selectedOption = computed({
 });
 
 const toggleDropdown = () => {
+  //只读
+  if (props.readonly) return;
+
   isOpen.value = !isOpen.value;
 
   if (list.value.length == 0) {
@@ -109,18 +116,16 @@ onMounted(() => {
 
 <template>
   <div ref="selectComponent" class="flex justify-between items-center relative">
-    <div class="text-[#6E7177] text-[0.7rem] leading-6">{{ label }} <span class="text-red-500" v-if="required">*</span>
+    <div class="text-[#6E7177] text-[0.7rem] leading-6">
+      {{ label }} <span class="text-red-500" v-if="required">*</span>
     </div>
-
-    <div class="text-[#292929] text-[0.7rem] flex flex-row items-center justify-center cursor-pointer"
-         @click="toggleDropdown">
+    <div class="text-[#292929] text-[0.7rem] flex flex-row items-center justify-center cursor-pointer" @click="toggleDropdown">
       <span>{{ selectedOption ? selectedOption.name : placeholder }}</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
            stroke="currentColor" class="w-[1.3rem] h-[0.74rem] inline-block">
         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
       </svg>
     </div>
-
     <button v-if="props.clearable && selectedOption" @click.stop="clearSelection"
             class="absolute right-8 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

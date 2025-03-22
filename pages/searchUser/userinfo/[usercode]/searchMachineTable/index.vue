@@ -38,7 +38,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div v-if="list.length>0" class="bg-white rounded p-4 mb-2">
         <div class="grid grid-cols-3 gap-4">
@@ -108,13 +108,3 @@ const onSubmit = async () => {
 
   </div>
 </template>
-
-<style scoped>
-.container {
-  background-image: url("@/assets/image/head_bj.png");
-  background-color: #f0f5f8;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-</style>

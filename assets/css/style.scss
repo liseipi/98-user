@@ -37,3 +37,15 @@ body {
 .txt-input-box {
   @apply w-full py-[0.25rem] px-2 border border-transparent rounded text-black text-right focus:outline-none focus:border-blue-500 placeholder:text-[0.65rem] placeholder:text-gray-400 placeholder:text-right;
 }
+
+.container-blue-bg {
+  background-image: url("@/assets/image/head_bj.png");
+  background-color: #f0f5f8;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.container-blue-color {
+  background-color: #f0f5f8;
+}

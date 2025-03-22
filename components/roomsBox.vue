@@ -33,6 +33,10 @@ const props = defineProps({
   init: {
     type: Boolean,
     default: false,
+  },
+  readonly: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -56,6 +60,9 @@ const toggleDropdown = () => {
     showToast('请先选择所在楼盘.');
     return;
   }
+
+  //只读
+  if (props.readonly) return;
 
   isOpen.value = !isOpen.value;
 

@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-blue-bg">
     <div class="mx-[0.8rem] py-4">
 
       <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">填写个人信息</h3>
@@ -150,13 +150,3 @@ onMounted(() => {
 
   </div>
 </template>
-
-<style scoped>
-.container {
-  background-image: url("head_bj.png");
-  background-color: #f0f5f8;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-</style>
