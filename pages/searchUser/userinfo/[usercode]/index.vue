@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
 
       <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">填写个人信息</h3>
@@ -87,14 +87,14 @@ onMounted(() => {
             <img src="../../../../assets/image/user_service_02.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询用水记录</span>
           </NuxtLink>
-          <button class="flex flex-col items-center">
+          <NuxtLink :to="'/searchUser/userinfo/'+usercode+'/searchPayment'" class="flex flex-col items-center">
             <img src="../../../../assets/image/user_service_03.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">账单查询</span>
-          </button>
-          <button class="flex flex-col items-center">
+          </NuxtLink>
+          <NuxtLink :to="'/searchUser/userinfo/'+usercode+'/paymentList'" class="flex flex-col items-center">
             <img src="../../../../assets/image/user_service_04.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询微信缴费流水</span>
-          </button>
+          </NuxtLink>
           <NuxtLink :to="'/searchUser/userinfo/'+usercode+'/searchWorkOrder'" class="flex flex-col items-center">
             <img src="../../../../assets/image/user_service_07.png" class="w-[1.8rem] h-[1.8rem]" alt="use service">
             <span class="txt-gray-7">查询工单</span>

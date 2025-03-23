@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="relative w-[3rem] h-[3rem] rounded-full bg-gray-200 mt-[2.65rem] mb-2 mx-auto overflow-hidden">
         <img :src="user?.wxheadpic" alt="avatar" class="object-cover w-full h-full"/>

@@ -30,7 +30,7 @@ const onSearch = async () => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="w-full">
         <div class="flex items-center rounded-lg  bg-gray-100 p-2 mb-6">

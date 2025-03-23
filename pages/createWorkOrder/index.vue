@@ -103,7 +103,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container-blue-color">
+  <div class="container container-blue-color">
     <div class="h-4"></div>
     <div class="mx-[0.8rem]">
       <div class="bg-white p-8 rounded-lg">

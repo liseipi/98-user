@@ -142,7 +142,7 @@ watch(() => formData.roomid, async (val) => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">填写个人信息</h3>
       <div class="bg-white">

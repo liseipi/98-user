@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded p-4 mb-4 space-y-2">
         <InputBox

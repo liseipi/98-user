@@ -27,3 +27,18 @@ export interface WatchData {
   erroramount: string;
   list: WatchDataList[];
 }
+
+export interface PaymentDataList {
+  transaction: string;
+  charging_time: string;
+  wxname: string;
+  amount: string;
+  paytype: string;
+  paystatus: string;
+  paytime: string;
+}
+
+export interface PaymentData {
+  count: number;
+  list: PaymentDataList[];
+}

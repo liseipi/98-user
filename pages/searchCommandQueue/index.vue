@@ -53,7 +53,7 @@ const onCancel = async (item) => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded-md px-4 py-4 grid grid-cols-1 gap-y-3">
         <date-box label="创建开始时间" v-model="formData.starttime"/>

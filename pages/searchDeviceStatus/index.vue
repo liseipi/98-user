@@ -20,7 +20,7 @@ const onSearch = async () => {
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="min-h-screen mx-[0.8rem]">
       <div class="min-h-screen flex flex-col py-4">
         <div class="flex-none flex items-center rounded-lg  bg-gray-100 p-2 mb-6">

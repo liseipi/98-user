@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="container-blue-bg">
+  <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded overflow-x-auto">
         <table class="w-full table-auto border-collapse">
