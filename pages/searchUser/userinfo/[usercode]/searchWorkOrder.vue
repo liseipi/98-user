@@ -4,6 +4,12 @@ import {workStatueTypes, workTypes} from "~/composables/optionsData";
 let route = useRoute()
 let usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 查询用户工单` : '查询用户工单';
+  }
+})
+
 let formData = reactive({
   usercode: usercode,
   starttime: '',

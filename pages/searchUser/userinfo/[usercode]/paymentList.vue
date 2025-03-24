@@ -4,6 +4,12 @@ import type {PaymentData, PaymentDataList} from "~/types/userInfo";
 let route = useRoute()
 let usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 查询微信缴费流水` : '查询微信缴费流水';
+  }
+})
+
 let page = 1;
 let limit = 20;
 let formData = reactive({

@@ -7,6 +7,12 @@ import InputBox from "~/components/inputBox.vue";
 let route = useRoute()
 let usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 编辑用户` : '编辑用户';
+  }
+})
+
 let formData = reactive({
   "usercode": "",
   "areaid": 0,

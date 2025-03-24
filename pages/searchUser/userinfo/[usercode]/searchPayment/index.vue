@@ -5,6 +5,12 @@ const route = useRoute();
 const router = useRouter();
 const usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 账单查询` : '账单查询';
+  }
+})
+
 let info = ref<PaymentData>();
 
 let monthID = ref('');

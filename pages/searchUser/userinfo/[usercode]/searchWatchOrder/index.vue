@@ -5,6 +5,12 @@ import type {WatchData, WatchDataList} from "~/types/userInfo";
 let route = useRoute()
 let usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 查询用水记录` : '查询用水记录';
+  }
+})
+
 let page = 1;
 let limit = 20;
 let formData = reactive({
@@ -23,6 +29,11 @@ let data = reactive({
 })
 let list = ref<WatchDataList[]>([]);
 const onSubmit = async () => {
+  if (!formData.starttime || !formData.endtime) {
+    showToast('请选择时间范围');
+    return;
+  }
+
   let res = await useRequest<WatchData>('/wxh5/staff/queryWaterUsageLog', {
     data: {
       ...formData,
@@ -78,19 +89,19 @@ const onSubmit = async () => {
               <p class="txt-gray-7">总用量(升)</p>
             </div>
             <div class="text-right">
-              <p class="txt-black-7">{{data.totalusage}}</p>
+              <p class="txt-black-7">{{ data.totalusage }}</p>
             </div>
             <div>
               <p class="txt-gray-7">流量计用量(升)</p>
             </div>
             <div class="text-right">
-              <p class="txt-black-7">{{data.flowmeterusage}}</p>
+              <p class="txt-black-7">{{ data.flowmeterusage }}</p>
             </div>
             <div>
               <p class="txt-gray-7">累计误差量(升)</p>
             </div>
             <div class="text-right">
-              <p class="txt-black-7">{{data.erroramount}}</p>
+              <p class="txt-black-7">{{ data.erroramount }}</p>
             </div>
           </div>
         </div>
@@ -107,10 +118,10 @@ const onSubmit = async () => {
             </thead>
             <tbody>
             <tr class="border-b hover:bg-gray-100" v-for="item in list" :key="item.id">
-              <td class="py-2 px-1 txt-black-7 txt-black-7">{{item.createtime}}</td>
-              <td class="py-2 px-1 txt-black-7 txt-black-7">{{item.reading}}</td>
-              <td class="py-2 px-1 txt-black-7 txt-black-7">{{item.count}}</td>
-              <td class="py-2 px-1 txt-black-7 txt-black-7">{{item.trx_duration}}</td>
+              <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.createtime }}</td>
+              <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.reading }}</td>
+              <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.count }}</td>
+              <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.trx_duration }}</td>
               <td class="py-2 px-1 txt-black-7 txt-black-7 text-blue-500"><a href="#">查看</a></td>
             </tr>
             </tbody>

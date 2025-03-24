@@ -4,6 +4,12 @@ import type {UserInfo} from "~/types/searchUser";
 let route = useRoute()
 let usercode = route.params.usercode;
 
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 用户信息` : '用户信息';
+  }
+})
+
 let userinfo = ref<UserInfo|null>();
 const getUserInfo = async () => {
   let res = await useRequest<UserInfo>('/wxh5/staff/UserDetails', {
