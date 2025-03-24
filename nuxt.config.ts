@@ -4,48 +4,34 @@ export default defineNuxtConfig({
     devtools: {enabled: false},
     ssr: false,
     target: 'static',
-    experimental: {appManifest: false},
+    experimental: {
+        appManifest: false,
+        payloadExtraction: false,   //启用此选项时（默认情况下）提取使用nuxt generate生成的页面的有效负载
+        defaults: {
+            nuxtLink: {
+                prefetch: false,
+            },
+        },
+    },
     referrer: 'no-referrer',
     modules: [
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'pinia-plugin-persistedstate/nuxt',
-        '@vant/nuxt'
+        '@vant/nuxt',
     ],
     build: {
         transpile: ['pinia-plugin-persistedstate'],
-        rollupConfig: {
-            output: {
-                entryFileNames: '[name].js',
-                chunkFileNames: '[name].js',
-                // assetFileNames: ({ name }) => {
-                //     // Define naming convention based on the file type
-                //     if (/\.css$/i.test(name)) {
-                //         return '[name].css';
-                //     }
-                //     if (/\.(pngjpe?ggifsvgwebp)$/i.test(name)) {
-                //         return 'img/[name][extname]';
-                //     }
-                //     if (/\.(woffwoff2eotttfotf)$/i.test(name)) {
-                //         return 'fonts/[name][extname]';
-                //     }
-                //     if (/\.(mp4webmogv)$/i.test(name)) {
-                //         return 'videos/[name][extname]';
-                //     }
-                //     // Fallback for other assets
-                //     return '[name][extname]';
-                // },
-            },
-            // output: {
-            //     app: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-            //     chunk: ({ isDev }) => isDev ? '[name].js' : '[name].js',
-            //     css: ({ isDev }) => isDev ? '[name].css' : '[name].css',
-            //     json: ({ isDev }) => isDev ? '[name].json' : '[name].json',
-            //     img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[name].[ext]',
-            //     font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[name].[ext]',
-            //     video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[name].[ext]'
-            // },
-        },
+        // rollupConfig: {
+        //     output: {
+        //         entryFileNames: '[name].[ext]',
+        //         chunkFileNames: '[name].[ext]',
+        //         assetFileNames: `[name].[hash].[ext]`
+        //     },
+        // },
+        // analyze: {
+        //     analyzerMode: 'static'
+        // },
     },
     app: {
         baseURL: '/user/',
@@ -98,4 +84,22 @@ export default defineNuxtConfig({
         //   }
         // }
     },
+    vite: {
+        build: {
+            modulePreload: false,
+            rollupOptions: {
+                output: {
+                    entryFileNames: '_nuxt/[name].[hash].js',
+                    chunkFileNames: '_nuxt/[name].[hash].js',
+                    assetFileNames: `_nuxt/[name].[hash].[ext]`,
+                    // manualChunks: (id: string) => {
+                    //     // console.log('manualChunks:', id);
+                    //     if (id.includes('vant')) {
+                    //         return 'vantUi';
+                    //     }
+                    // }
+                }
+            },
+        }
+    }
 })
