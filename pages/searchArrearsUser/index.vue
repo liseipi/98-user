@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {workTypes} from "~/composables/optionsData";
-import SelectBox from "~/components/selectBox.vue";
 import InputBox from "~/components/inputBox.vue";
 import RoomsBox from "~/components/roomsBox.vue";
 import AreaBox from "~/components/areaBox.vue";

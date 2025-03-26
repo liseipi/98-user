@@ -1,23 +1,25 @@
-//工单类型
-export const workTypes = [
-    {
-        value: 1,
-        label: 'type A',
-    },
-    {
-        value: 2,
-        label: 'type B',
-    },
-];
-//工单状态
+
+//工单状态 0=待接单,1=已接单,2=已完成,3=已回访,-1=已拒绝
 export const workStatueTypes = [
     {
+        value: 0,
+        label: '待接单',
+    },
+    {
         value: 1,
-        label: 'type A',
+        label: '已接单',
     },
     {
         value: 2,
-        label: 'type B',
+        label: '已完成',
+    },
+    {
+        value: 3,
+        label: '已回访',
+    },
+    {
+        value: -1,
+        label: '已拒绝',
     },
 ];
 

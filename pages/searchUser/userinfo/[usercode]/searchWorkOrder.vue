@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {workStatueTypes, workTypes} from "~/composables/optionsData";
+import {workStatueTypes} from "~/composables/optionsData";
+import WorkType from "~/components/workType.vue";
 
 let route = useRoute()
 let usercode = route.params.usercode;
@@ -27,11 +28,9 @@ let formData = reactive({
         <hr/>
         <date-box label="创建结束时间" v-model="formData.endtime"/>
         <hr/>
-        <SelectBox
-            :options="workTypes"
+        <WorkType
             v-model="formData.type"
             label="工单类型"
-            name="type"
             placeholder="不分类型"
         />
         <hr/>

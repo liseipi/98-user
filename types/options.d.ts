@@ -25,3 +25,12 @@ export interface BankItem {
     id: number;
     name: string;
 }
+
+export interface WorkTypeDataItem {
+    id: number;
+    name: string;
+}
+
+export interface WorkTypeData extends WorkTypeDataItem {
+    item: WorkTypeDataItem[];
+}

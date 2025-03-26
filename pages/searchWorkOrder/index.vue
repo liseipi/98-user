@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import SelectBox from "~/components/selectBox.vue";
 import AreaBox from "~/components/areaBox.vue";
-import {workTypes} from "~/composables/optionsData";
 import type {SearchWorkItem, SearchWorkResponse} from "~/types/searchWork";
 import RoomsBox from "~/components/roomsBox.vue";
-import type {AreaItem} from "~/types/options";
+import WorkType from "~/components/workType.vue";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -21,6 +19,9 @@ let count = ref(0)
 let list = ref<SearchWorkItem[]>([])
 
 const onSearch = async () => {
+  // if (!type.value || !area.value || !buildingid.value || !roomid.value) {
+  //   showToast('请选择查询条件')
+  // }
   let res = await useRequest<SearchWorkResponse>('/wxh5/staff/queryWorkOrder', {
     query: {
       type: type.value,
@@ -41,11 +42,10 @@ const onSearch = async () => {
   <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded-md p-4 grid grid-cols-1 gap-y-4">
-        <SelectBox
-            :options="workTypes"
+        <WorkType
             v-model="type"
             label="工单类型"
-            name="type"
+            clearable
             placeholder="不分类型"
         />
         <hr/>
@@ -94,9 +94,9 @@ const onSearch = async () => {
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in list" :key="index">
-              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{item.createtime}}</td>
-              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{item.buildingname}} {{item.roomname}}</td>
-              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{item.remark}}用水 {{item.mobile}}</td>
+              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.createtime }}</td>
+              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.buildingname }} {{ item.roomname }}</td>
+              <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.remark }}用水 {{ item.mobile }}</td>
             </tr>
             </tbody>
           </table>

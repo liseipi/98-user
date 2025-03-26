@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import {workTypes} from "~/composables/optionsData";
-import SelectBox from "~/components/selectBox.vue";
 import AreaBox from "~/components/areaBox.vue";
 import RoomsBox from "~/components/roomsBox.vue";
 import InputBox from "~/components/inputBox.vue";
+import WorkType from "~/components/workType.vue";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -145,12 +144,10 @@ const onSubmit = async () => {
               v-model="formData.mobile"
           />
           <hr class="border-t border-gray-200"/>
-          <SelectBox
-              :options="workTypes"
+          <WorkType
               v-model="formData.type"
               label="工单类型"
-              name="type"
-              placeholder="请选择服务类型"
+              placeholder="请选工单类型"
           />
           <hr class="border-t border-gray-200"/>
           <InputBox
@@ -160,7 +157,7 @@ const onSubmit = async () => {
           />
           <hr class="border-t border-gray-200"/>
           <div class="flex flex-col justify-start items-start">
-            <div class="text-[#6E7177] text-[0.7rem] py-2">水表照片</div>
+            <div class="text-[#6E7177] text-[0.7rem] py-2">上传图片</div>
             <div class="flex items-center space-x-2">
               <input type="file" ref="fileInput" @change="onFileChange" style="display: none;">
               <div v-if="previewUrl"

@@ -74,8 +74,11 @@ const formatDate = (date) => {
 const emit = defineEmits(['update:modelValue']);
 
 watch(() => props.modelValue, (val) => {
-  currentDate.value = val
-      ? [new Date(val).getFullYear(), new Date(val).getMonth() + 1, new Date(val).getDate()]
-      : [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]
+  const dateStr = val;
+  const [datePart, timePart] = dateStr.split(" ");
+  const [year, month, day] = datePart.split("-");
+  const [hours, minutes, seconds] = timePart.split(":");
+  const date = new Date(year, month - 1, day, hours, minutes, seconds); // 月份从 0 开始，所以减 1
+  currentDate.value = date
 })
 </script>
