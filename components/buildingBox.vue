@@ -132,7 +132,7 @@ onUnmounted(() => {
 
     <div class="text-[#292929] text-[0.7rem] flex flex-row items-center justify-center cursor-pointer"
          @click="toggleDropdown">
-      <span>{{ selectedOption ? selectedOption.name : placeholder }}</span>
+      <span :class="{'text-gray-400': readonly}">{{ selectedOption ? selectedOption.name : placeholder }}</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
            stroke="currentColor" class="w-[1.3rem] h-[0.74rem] inline-block">
         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>

@@ -65,7 +65,7 @@ onMounted(() => {
           <div class="space-y-3">
             <div class="flex justify-between items-center">
               <label class="text-sm txt-gray-7">用户编号</label>
-              <span class="text-sm txt-black-7">{{ formData.usercode }}</span>
+              <span class="text-sm txt-black-7 !text-gray-400">{{ formData.usercode }}</span>
             </div>
             <hr>
             <AreaBox
@@ -147,23 +147,20 @@ onMounted(() => {
                 v-model="formData.notes"
             ></InputBox>
             <hr>
-            <InputBox
-                label="余额"
-                placeholder="请输入余额"
-                v-model="formData.balance"
-            ></InputBox>
+            <div class="flex justify-between items-center">
+              <label class="text-sm txt-gray-7">余额</label>
+              <span class="text-sm txt-black-7 !text-gray-400 px-2">{{ formData.balance }}</span>
+            </div>
             <hr>
-            <InputBox
-                label="充值余额"
-                placeholder="请输入充值余额"
-                v-model="formData.rechargebalance"
-            ></InputBox>
+            <div class="flex justify-between items-center">
+              <label class="text-sm txt-gray-7">充值余额</label>
+              <span class="text-sm txt-black-7 !text-gray-400 px-2">{{ formData.rechargebalance }}</span>
+            </div>
             <hr>
-            <InputBox
-                label="赠送余额"
-                placeholder="请输入赠送余额"
-                v-model="formData.giftbalance"
-            ></InputBox>
+            <div class="flex justify-between items-center">
+              <label class="text-sm txt-gray-7">赠送余额</label>
+              <span class="text-sm txt-black-7 !text-gray-400 px-2">{{ formData.giftbalance }}</span>
+            </div>
           </div>
         </form>
       </div>
