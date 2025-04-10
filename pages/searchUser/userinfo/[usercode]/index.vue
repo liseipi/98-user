@@ -10,20 +10,40 @@ useHead({
   }
 })
 
-let userinfo = ref<UserInfo|null>();
+let userinfo = ref<UserInfo | null>();
 const getUserInfo = async () => {
   let res = await useRequest<UserInfo>('/wxh5/staff/UserDetails', {
     query: {usercode: route.params.usercode},
   });
-  console.log(res);
+  // console.log(res);
   if (res.status === 0) {
     userinfo.value = res.data;
+  }
+}
+
+let readingNum = ref();
+const sendReadingNum = async () => {
+  let res = await useRequest('/wxh5/staff/postUserReading', {
+    method: 'POST',
+    query: {
+      readingnum: readingNum.value,
+    }
+  });
+  if (res.status === 0) {
+    showToast({
+      type: 'success',
+      message: '提交成功'
+    });
+    readingNum.value = '';
+  } else {
+    showToast(res.msg);
   }
 }
 
 onMounted(() => {
   getUserInfo();
 })
+
 </script>
 
 <template>
@@ -70,9 +90,9 @@ onMounted(() => {
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <label class="txt-gray-7">本期机械</label>
               <div class="flex items-center text-sm">
-                <input class="txt-black-7 mr-2 w-16 px-1" type="text" placeholder="请输入">
-                <button
-                    class="bg-[#E3EEFF] text-[0.7rem] px-[0.57rem] text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                <input v-model="readingNum" class="txt-black-7 mr-2 w-16 px-1" type="number" placeholder="请输入"/>
+                <button @click="sendReadingNum"
+                        class="bg-[#E3EEFF] text-[0.7rem] px-[0.57rem] text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                   提交读数
                 </button>
               </div>

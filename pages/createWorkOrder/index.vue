@@ -4,6 +4,8 @@ import RoomsBox from "~/components/roomsBox.vue";
 import InputBox from "~/components/inputBox.vue";
 import WorkType from "~/components/workType.vue";
 
+const router = useRouter();
+
 useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - 创建工单` : '创建工单';
@@ -90,12 +92,24 @@ const uploadFile = async () => {
 };
 
 const onSubmit = async () => {
+  if (!formData.type) {
+    showToast('请选择工单类型');
+    return;
+  }
   const res = await useRequest('/wxh5/staff/createJobOrder', {
     method: 'POST',
     body: formData,
   });
-  if (res.status === '200') {
-    showToast('创建成功.')
+  if (res.status === 0) {
+    showToast({
+      type: 'success',
+      message: '创建工单成功',
+      onClose: () => {
+        router.back();
+      }
+    });
+  } else {
+    showToast(res.msg);
   }
 }
 
@@ -153,7 +167,7 @@ const onSubmit = async () => {
           <InputBox
               label="需求描述"
               placeholder="请输入需求描述"
-              v-model="formData.mobile"
+              v-model="formData.describe"
           />
           <hr class="border-t border-gray-200"/>
           <div class="flex flex-col justify-start items-start">
