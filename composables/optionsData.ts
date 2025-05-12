@@ -183,3 +183,19 @@ export const DepositDestinationType = [
         label: '客户'
     }
 ]
+
+//房屋状态
+export const HousingStatusType = [
+    {
+        value: 1,
+        label: '居住中'
+    },
+    {
+        value: 2,
+        label: '即将入住'
+    },
+    {
+        value: 3,
+        label: '装修中'
+    },
+];

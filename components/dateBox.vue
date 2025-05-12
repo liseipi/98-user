@@ -45,7 +45,7 @@ const props = defineProps({
 });
 const showPopup = ref(false);
 const selectedDate = ref(null);
-const currentDate = ref();
+const currentDate = ref([new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]);
 const minDate = new Date(new Date().getFullYear() - 10, 0, 1);
 const maxDate = new Date(new Date().getFullYear() + 10, 11, 31); // or Date.now() for today
 
@@ -68,25 +68,16 @@ const onCancel = () => {
 };
 
 const formatDate = (date) => {
+  // const year = date.getFullYear();
+  // const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  // const day = String(date.getDate()).padStart(2, '0');
   return `${date[0]}-${date[1]}-${date[2]}`;
 };
 
-const emit = defineEmits(['update:modelValue']);
+const modeValue = computed(() => {
+  return props.modelValue ? props.modelValue : ''
+});
 
-watch(() => props.modelValue, (val) => {
-  const ua = navigator.userAgent.toLowerCase();
-  let separator = '-';
-  if (ua.includes("safari") && !ua.includes("chrome")) {
-    separator = '/'; // Safari 浏览器
-  }
-  let date = val ? new Date(val) : new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  // return `${year}${separator}${month}${separator}${day} ${hours}:${minutes}:${seconds}`;
-  currentDate.value = [year, month, day];
-})
+import {defineEmits} from 'vue' // Add this line
+const emit = defineEmits(['update:modelValue'])
 </script>

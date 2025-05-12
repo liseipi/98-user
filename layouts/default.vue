@@ -1,5 +1,5 @@
 <template>
-  <NuxtPage keepalive />
+  <NuxtPage />
 </template>
 
 <script setup lang="ts">

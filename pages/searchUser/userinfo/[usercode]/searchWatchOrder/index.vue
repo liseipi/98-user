@@ -35,18 +35,24 @@ const onSubmit = async () => {
   }
 
   let res = await useRequest<WatchData>('/wxh5/staff/queryWaterUsageLog', {
-    data: {
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    body: JSON.stringify({
       ...formData,
       page,
       limit
-    },
-  })
-  if (res.status === 0) {
+    }),
+  });
+  if (res.status === 0 && res.data !== 2001) {
     data.count = res.data.count;
     data.totalusage = res.data.totalusage;
     data.flowmeterusage = res.data.flowmeterusage;
     data.erroramount = res.data.erroramount;
     list.value = res.data.list;
+  } else {
+    showToast(res.msg);
   }
 }
 
