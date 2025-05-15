@@ -38,6 +38,8 @@ const getInfo = async () => {
   });
   if (res.status === 0) {
     Object.assign(formData, res.data);
+  } else {
+    showToast(res.msg);
   }
 }
 
@@ -47,6 +49,8 @@ const onSubmit = async () => {
     body: {...formData},
   })
   if (res.status === 0) {
+    showToast(res.msg);
+  } else {
     showToast(res.msg);
   }
 }

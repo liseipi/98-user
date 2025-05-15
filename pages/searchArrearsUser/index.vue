@@ -30,7 +30,7 @@ const onSearch = async () => {
     roomid: formData.areaid,
     usercode: formData.areaid
   });
-  if (res.status == '200') {
+  if (res.status == 0) {
     arrearsamount.value = res.data.arrearsamount;
     defaultamount.value = res.data.defaultamount;
     arrearscount.value = res.data.arrearscount;

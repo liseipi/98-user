@@ -11,6 +11,11 @@ useHead({
   }
 })
 
+definePageMeta({
+//   keepalive: true,
+//   // key: () => Date.now().toString() // 每次重新打开页面时重置缓存
+})
+
 let page = 1;
 let limit = 20;
 let formData = reactive({
@@ -40,12 +45,12 @@ const onSubmit = async () => {
       'Content-Type': 'multipart/form-data'
     },
     body: JSON.stringify({
-      ...formData,
+      ...data,
       page,
       limit
     }),
   });
-  if (res.status === 0 && res.data !== 2001) {
+  if (res.status === 0) {
     data.count = res.data.count;
     data.totalusage = res.data.totalusage;
     data.flowmeterusage = res.data.flowmeterusage;
@@ -55,6 +60,10 @@ const onSubmit = async () => {
     showToast(res.msg);
   }
 }
+
+onDeactivated(() => {
+  console.log(333)
+});
 
 </script>
 
@@ -128,7 +137,9 @@ const onSubmit = async () => {
               <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.reading }}</td>
               <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.count }}</td>
               <td class="py-2 px-1 txt-black-7 txt-black-7">{{ item.trx_duration }}</td>
-              <td class="py-2 px-1 txt-black-7 txt-black-7 text-blue-500"><a href="#">查看</a></td>
+              <td class="py-2 px-1 txt-black-7 txt-black-7">
+                <NuxtLink class="text-blue-500" :to="'/searchUser/userinfo/020102060102/searchWatchOrder/show?id='+item.id">查看</NuxtLink>
+              </td>
             </tr>
             </tbody>
           </table>

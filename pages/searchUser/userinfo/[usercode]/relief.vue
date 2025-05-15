@@ -29,6 +29,8 @@ const onSubmit = async () => {
   })
   if (res.status === 0) {
     showToast(res.msg);
+  } else {
+    showToast(res.msg);
   }
 }
 

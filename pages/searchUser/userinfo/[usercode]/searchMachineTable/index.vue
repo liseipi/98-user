@@ -31,6 +31,8 @@ const onSubmit = async () => {
     data.recentlyliters = res.data.recentlyliters;
     data.recentlytime = res.data.recentlytime;
     list.value = res.data.list;
+  } else {
+    showToast(res.msg);
   }
 
 }

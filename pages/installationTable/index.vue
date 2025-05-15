@@ -78,8 +78,10 @@ const uploadFile = async () => {
 
     // 处理服务器响应
     console.log('File uploaded successfully:', res);
-    if (res.status === '200') {
+    if (res.status === 0) {
       formData.file = res.data;
+    } else {
+      showToast(res.msg);
     }
 
   } catch (error) {
@@ -93,8 +95,10 @@ const onSubmit = async () => {
     method: 'POST',
     body: formData,
   });
-  if (res.status === '200') {
+  if (res.status === 0) {
 
+  } else {
+    showToast(res.msg);
   }
 }
 

@@ -81,8 +81,10 @@ const uploadFile = async () => {
 
     // 处理服务器响应
     console.log('File uploaded successfully:', res);
-    if (res.status === '200') {
+    if (res.status === 0) {
       formData.image = res.data;
+    } else {
+      showToast(res.msg);
     }
 
   } catch (error) {

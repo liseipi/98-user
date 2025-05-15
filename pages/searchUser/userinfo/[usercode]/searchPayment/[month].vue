@@ -23,6 +23,8 @@ const getData = async () => {
   })
   if (res.status === 0) {
     data.value = res.data;
+  } else {
+    showToast(res.msg);
   }
 }
 

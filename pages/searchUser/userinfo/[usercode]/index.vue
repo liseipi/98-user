@@ -18,6 +18,8 @@ const getUserInfo = async () => {
   // console.log(res);
   if (res.status === 0) {
     userinfo.value = res.data;
+  } else {
+    showToast(res.msg);
   }
 }
 

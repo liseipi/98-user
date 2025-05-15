@@ -35,6 +35,8 @@ const onSearch = async () => {
   if (res.status === 0) {
     count.value = res.data.count;
     list.value = res.data.list;
+  } else {
+    showToast(res.msg);
   }
 }
 </script>

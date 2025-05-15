@@ -30,9 +30,11 @@ const onSearch = async () => {
       roomid: roomid.value,
     }
   });
-  if (res.status === "200") {
+  if (res.status === 0) {
     count.value = res.data.count
     list.value = res.data.list
+  } else {
+    showToast(res.msg);
   }
 }
 
@@ -88,7 +90,7 @@ const onSearch = async () => {
                 楼盘房号
               </th>
               <th scope="col" class="py-[1rem] pr-2 text-left text-[0.65rem] text-[#6E7177]">
-                问题描述/业主电话
+                描述
               </th>
             </tr>
             </thead>

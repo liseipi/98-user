@@ -9,6 +9,8 @@ const getUserInfo = async () => {
   if (res.status === 0) {
     user.value = res.data as Profile;
     profileStore().setProfile(res.data as Profile);
+  } else {
+    showToast(res.msg);
   }
 }
 

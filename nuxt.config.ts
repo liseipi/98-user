@@ -34,6 +34,7 @@ export default defineNuxtConfig({
         // },
     },
     app: {
+        // keepalive: true,
         baseURL: '/user/',
         head: {
             title: '科汇直饮水员工端',

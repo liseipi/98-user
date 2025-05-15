@@ -31,9 +31,11 @@ const onSearch = async () => {
       devicecode: formData.devicecode,
     }
   });
-  if (res.status === '200') {
+  if (res.status === 0) {
     count.value = res.data.count;
     list.value = res.data.list;
+  } else {
+    showToast(res.msg);
   }
 }
 
@@ -44,9 +46,11 @@ const onCancel = async (item) => {
       id: item.id,
     }
   });
-  if (res.status === '200') {
+  if (res.status === 0) {
     showToast('撤销完成')
     await onSearch(); //更新查询
+  } else {
+    showToast(res.msg);
   }
 }
 
