@@ -12,6 +12,8 @@ useHead({
 
 let count = ref(0);
 let list = ref<CommandList[]>([]);
+let status = ref(false);
+let isLoading = ref(false);
 
 let formData = reactive({
   starttime: '',
@@ -22,35 +24,46 @@ let formData = reactive({
 })
 
 const onSearch = async () => {
-  let res = await useRequest<CommandQueue>('/wxh5/staff/queryInstructionQueue', {
-    query: {
-      starttime: formData.starttime,
-      endtime: formData.endtime,
-      type: formData.type,
-      status: formData.status,
-      devicecode: formData.devicecode,
+  try {
+    isLoading.value = true;
+    let res = await useRequest<CommandQueue>('/wxh5/staff/queryInstructionQueue', {
+      query: {
+        starttime: formData.starttime,
+        endtime: formData.endtime,
+        type: formData.type,
+        status: formData.status,
+        devicecode: formData.devicecode,
+      }
+    });
+    if (res.status === 0) {
+      count.value = res.data.count;
+      list.value = res.data.list;
+    } else {
+      showToast(res.msg);
     }
-  });
-  if (res.status === 0) {
-    count.value = res.data.count;
-    list.value = res.data.list;
-  } else {
-    showToast(res.msg);
+    status.value = true
+    isLoading.value = false
+  } catch (e) {
+    console.log(e)
   }
 }
 
 const onCancel = async (item) => {
-  let res = await useRequest('/wxh5/staff/cancelInstruction', {
-    query: {
-      devicecode: item.devicecode,
-      id: item.id,
+  try {
+    let res = await useRequest('/wxh5/staff/cancelInstruction', {
+      query: {
+        devicecode: item.devicecode,
+        id: item.id,
+      }
+    });
+    if (res.status === 0) {
+      showToast('撤销完成')
+      await onSearch(); //更新查询
+    } else {
+      showToast(res.msg);
     }
-  });
-  if (res.status === 0) {
-    showToast('撤销完成')
-    await onSearch(); //更新查询
-  } else {
-    showToast(res.msg);
+  } catch (e) {
+    console.log(e)
   }
 }
 
@@ -88,6 +101,8 @@ const onCancel = async (item) => {
           查询
         </button>
       </div>
+
+      <h3 v-if="status&&list.length==0" class="text-[0.7rem] text-[#292929] mt-4 mb-2">查询结果为空</h3>
 
       <div v-if="list.length>0">
         <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">未完成指令总数：{{ count }}</h3>

@@ -8,13 +8,25 @@ useHead({
 })
 
 let devicecode = ref('')
-let list = ref<SearchDeviceStatusItem[]>()
+let list = ref<SearchDeviceStatusItem[]>([])
+let status = ref(false)
+let isLoading = ref(false)
 
 const onSearch = async () => {
-  let res = await useRequest<SearchDeviceStatusItem[]>('/wxh5/staff/queryEquipmentStatus', {
-    query: {devicecode}
-  });
-  list.value = res.data;
+  try {
+    isLoading.value = true
+    let res = await useRequest<SearchDeviceStatusItem[]>('/wxh5/staff/queryEquipmentStatus', {
+      query: {devicecode: devicecode.value}
+    });
+    if (res.status == 0) {
+      list.value = res.data;
+    }
+    status.value = true
+    isLoading.value = false
+  } catch (e) {
+    console.log(e)
+  }
+
 }
 
 </script>
@@ -36,42 +48,42 @@ const onSearch = async () => {
         </div>
 
         <!--空时-->
-        <div class="flex-1 mt-4" v-if="!list">
+        <div class="flex-1 mt-4" v-if="status&&list.length==0">
           <div class="flex flex-col items-center mt-[20%]">
             <img src="@/assets/image/empty.png" class="w-[3.7rem] h-[3.7rem]" alt="empty">
             <span class="txt-black-7 mt-2">输入设备号查询</span>
           </div>
         </div>
 
-        <div class="flex-1 mt-4" v-if="list">
+        <div class="flex-1 mt-4" v-if="list.length>0">
           <h2 class="text-[#292929] text-[0.7rem] mb-2">查询结果</h2>
 
           <div class="bg-white shadow-md rounded-lg p-4" v-for="(item, index) in list" :key="index">
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">最近联络时间</div>
-                <div class="txt-black-7">{{item.lasttime}}</div>
+                <div class="txt-black-7">{{ item.lasttime }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">脉冲比例</div>
-                <div class="txt-black-7">{{item.pulseratio}}</div>
+                <div class="txt-black-7">{{ item.pulseratio }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">讯号强度</div>
-                <div class="txt-black-7">{{item.signalstrength}}</div>
+                <div class="txt-black-7">{{ item.signalstrength }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">电池电压(V)</div>
-                <div class="txt-black-7">{{item.batteryvoltage}}</div>
+                <div class="txt-black-7">{{ item.batteryvoltage }}</div>
               </div>
             </div>
 
@@ -80,8 +92,8 @@ const onSearch = async () => {
                 <div class="txt-gray-7">阀门状态/时间</div>
                 <div class="flex items-center space-x-2">
                   <div class="">
-                    <div class="txt-black-7">{{item.valvestatus==0 ? '关闭': '开启' }}</div>
-                    <div class="txt-black-7">{{item.updatetime}}</div>
+                    <div class="txt-black-7">{{ item.valvestatus == 0 ? '关闭' : '开启' }}</div>
+                    <div class="txt-black-7">{{ item.updatetime }}</div>
                   </div>
                   <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="toggle" id="toggle"
@@ -97,7 +109,7 @@ const onSearch = async () => {
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">累计数</div>
                 <div class="flex items-center space-x-2">
-                  <div class="txt-black-7">{{item.totalreading}}</div>
+                  <div class="txt-black-7">{{ item.totalreading }}</div>
                   <button class="bg-[#E3EEFF] text-[#3789FF] text-[0.7rem] rounded-md px-[0.6rem] py-[0.23rem]">调表</button>
                 </div>
               </div>
