@@ -11,11 +11,6 @@ useHead({
   }
 })
 
-definePageMeta({
-//   keepalive: true,
-//   // key: () => Date.now().toString() // 每次重新打开页面时重置缓存
-})
-
 let page = 1;
 let limit = 20;
 let formData = reactive({
@@ -60,10 +55,6 @@ const onSubmit = async () => {
     showToast(res.msg);
   }
 }
-
-onDeactivated(() => {
-  console.log(333)
-});
 
 </script>
 

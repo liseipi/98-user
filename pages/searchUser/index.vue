@@ -2,8 +2,22 @@
 import type {SearchUserItem} from "~/types/searchUser";
 import UserItem from "~/pages/searchUser/component/userItem.vue";
 
+const route = useRoute();
+const router = useRouter();
+
 let keyword = ref('');
 let list = ref<SearchUserItem[]>();
+let isLoading = ref(false);
+
+definePageMeta({
+  keepalive: true,
+  deepth: 1,
+  key: route => route.fullPath // 确保不同参数生成不同缓存
+})
+
+defineOptions({
+  name: 'searchUser'
+})
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -11,21 +25,41 @@ useHead({
   }
 })
 
-const onSearch = async () => {
+const onSearch = () => {
   if (keyword.value.trim() === '') {
     showToast('输入房间编号');
     return
   }
 
+  // getData();
+  router.replace({path: '/searchUser', query: {keyword: keyword.value.trim()}});
+}
+
+const getData = async () => {
+  isLoading.value = true;
   let res = await useRequest('/wxh5/staff/searchUser', {
     query: {
       keyword: keyword.value,
     }
   });
+  isLoading.value = false;
   if (res.data) {
     list.value = res.data as SearchUserItem[];
   }
 }
+
+watch(() => route.query.keyword, (newKeywordQuery) => {
+  let key = (newKeywordQuery as string || '').trim();
+  if (key) {
+    keyword.value = key;
+    getData();
+  }
+}, {immediate: true})
+
+onActivated(() => {
+  keyword.value = route.query.keyword as string || ''
+});
+
 
 </script>
 
@@ -43,7 +77,7 @@ const onSearch = async () => {
           <input type="text" placeholder="输入房间编号"
                  v-model="keyword"
                  class="bg-transparent outline-none flex-1 text-[#292929] text-[0.7rem]"/>
-          <button class="text-blue-500 text-[0.7rem]" @click="onSearch">查询</button>
+          <button class="text-blue-500 text-[0.7rem]" @click="onSearch">{{ isLoading ? '查询中...' : '查询' }}</button>
         </div>
 
         <!--空时-->
