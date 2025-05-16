@@ -11,7 +11,6 @@ let isLoading = ref(false);
 
 definePageMeta({
   keepalive: true,
-  deepth: 1,
   key: route => route.fullPath // 确保不同参数生成不同缓存
 })
 

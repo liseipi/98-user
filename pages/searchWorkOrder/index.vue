@@ -10,25 +10,25 @@ useHead({
   }
 })
 
-const type = ref('');
-const area = ref('');
-const buildingid = ref('');
-const roomid = ref('');
+let formData = reactive({
+  type: '',
+  area: '',
+  buildingid: '',
+  roomid: '',
+})
 
+let status = ref(false)
 let count = ref(0)
 let list = ref<SearchWorkItem[]>([])
+let isLoading = ref(false)
 
 const onSearch = async () => {
-  // if (!type.value || !area.value || !buildingid.value || !roomid.value) {
+  // if (!formData.type && !formData.area && !formData.buildingid && !formData.roomid) {
   //   showToast('请选择查询条件')
   // }
+  isLoading.value = true
   let res = await useRequest<SearchWorkResponse>('/wxh5/staff/queryWorkOrder', {
-    query: {
-      type: type.value,
-      area: area.value,
-      buildingid: buildingid.value,
-      roomid: roomid.value,
-    }
+    query: {...formData}
   });
   if (res.status === 0) {
     count.value = res.data.count
@@ -36,6 +36,8 @@ const onSearch = async () => {
   } else {
     showToast(res.msg);
   }
+  isLoading.value = false
+  status.value = true
 }
 
 </script>
@@ -45,36 +47,40 @@ const onSearch = async () => {
     <div class="mx-[0.8rem] py-4">
       <div class="bg-white rounded-md p-4 grid grid-cols-1 gap-y-4">
         <WorkType
-            v-model="type"
+            v-model="formData.type"
             label="工单类型"
             clearable
             placeholder="不分类型"
         />
         <hr/>
         <AreaBox
-            v-model="area"
+            v-model="formData.area"
             label="区域"
             placeholder="不分区域"
         />
         <hr/>
         <BuildingBox
-            v-model="buildingid"
-            :area-id="area"
+            v-model="formData.buildingid"
+            :area-id="formData.area"
             label="楼盘"
             placeholder="不分楼盘"
         />
         <hr/>
         <RoomsBox
-            v-model="roomid"
-            :building-id="buildingid"
+            v-model="formData.roomid"
+            :building-id="formData.buildingid"
             label="房号"
             placeholder="不分房号"
         />
         <hr/>
         <button @click="onSearch" class="bg-blue-500 hover:bg-blue-700 text-white text-[0.8rem] py-2 px-8 rounded">
-          查询
+          {{ isLoading ? '查询中...' : '查询' }}
         </button>
       </div>
+
+      <h3 v-if="status&&list.length==0" class="text-[0.7rem] text-[#292929] mt-4 mb-2">
+        查询的结果为空
+      </h3>
 
       <h3 v-if="list.length>0" class="text-[0.7rem] text-[#292929] mt-4 mb-2">未完成工单总数：{{ count }}</h3>
 
