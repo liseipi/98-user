@@ -13,7 +13,7 @@ useHead({
 let userinfo = ref<UserInfo | null>();
 const getUserInfo = async () => {
   let res = await useRequest<UserInfo>('/wxh5/staff/UserDetails', {
-    query: {usercode: route.params.usercode},
+    query: {usercode: usercode},
   });
   // console.log(res);
   if (res.status === 0) {
@@ -28,6 +28,7 @@ const sendReadingNum = async () => {
   let res = await useRequest('/wxh5/staff/postUserReading', {
     method: 'POST',
     query: {
+      usercode: usercode,
       readingnum: readingNum.value,
     }
   });
@@ -76,6 +77,10 @@ onMounted(() => {
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">用户</span>
               <span class="txt-black-7">{{ userinfo?.username }}</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-200 py-2">
+              <span class="txt-gray-7">手机</span>
+              <span class="txt-black-7">{{ userinfo?.usermobile }}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">套餐</span>

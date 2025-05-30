@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {workStatueTypes} from "~/composables/optionsData";
+import {DataOriginType, DepositDestinationType, workStatueTypes} from "~/composables/optionsData";
 import type {WatchData, WatchDataList} from "~/types/userInfo";
 
 let route = useRoute()
@@ -18,7 +18,7 @@ let formData = reactive({
   starttime: '',
   endtime: '',
   src: '',
-  bill_to: '',
+  bill_to: ''
 })
 
 let data = reactive({
@@ -33,14 +33,15 @@ const onSubmit = async () => {
     showToast('请选择时间范围');
     return;
   }
-
   let res = await useRequest<WatchData>('/wxh5/staff/queryWaterUsageLog', {
     method: 'post',
     headers: {
       'Content-Type': 'multipart/form-data'
     },
     body: JSON.stringify({
-      ...data,
+      ...formData,
+      src: DataOriginType.find(item => item.value == formData.src)?.label,
+      bill_to: DepositDestinationType.find(item => item.value == formData.bill_to)?.label,
       page,
       limit
     }),
@@ -67,15 +68,15 @@ const onSubmit = async () => {
         <date-box label="创建结束时间" v-model="formData.endtime"/>
         <hr/>
         <SelectBox
-            :options="workStatueTypes"
-            v-model="formData.origin"
+            :options="DataOriginType"
+            v-model="formData.src"
             label="数据来源"
             name="type"
             placeholder="不分数据来源"
         />
         <hr/>
         <SelectBox
-            :options="workStatueTypes"
+            :options="DepositDestinationType"
             v-model="formData.bill_to"
             label="入账去向"
             name="type"

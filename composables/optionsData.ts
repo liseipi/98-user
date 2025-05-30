@@ -176,11 +176,31 @@ export const ReliefReasonType = [
     }
 ]
 
+//数据来源
+export const DataOriginType = [
+    {
+        value: 1,
+        label: '人工'
+    },
+    {
+        value: 2,
+        label: '电子'
+    }
+]
+
 //⼊账去向
 export const DepositDestinationType = [
     {
         value: 1,
         label: '客户'
+    },
+    {
+        value: 2,
+        label: '抄表'
+    },
+    {
+        value: 3,
+        label: '调表'
     }
 ]
 
