@@ -13,15 +13,15 @@ useHead({
   }
 })
 
-let data = ref<BillDetails>()
+let data = ref<BillDetails>({})
 const getData = async () => {
-  let res = await useRequest<BillDetails>('/wxh5/client/getBillDetails', {
+  let res = await useRequest<BillDetails>('/wxh5/staff/billDetails', {
     query: {
       usercode: userCode,
       charging_time: month
     }
   })
-  if (res.status === 0) {
+  if (res.status == 0) {
     data.value = res.data;
   } else {
     showToast(res.msg);
@@ -53,7 +53,7 @@ const icon = computed(() => data.value?.pay_status == 1 ? paid : pending);
           <hr class="border-t border-dashed border-gray-200 my-4"/>
           <div class="grid grid-cols-2 gap-y-2">
             <div class="text-[#6E7177] text-[0.65rem]">用户地址</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.buildingname }} {{ data?.roomname }} {{ data?.areaname }}</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.areaname }} {{ data?.buildingname }} {{ data?.roomname }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">支付项目</div>
             <div class="text-[#222222] text-[0.65rem]">{{ data?.itemname }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">开始时间</div>
