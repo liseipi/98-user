@@ -172,7 +172,7 @@ watch(() => formData.roomid, async (val) => {
             <RoomsBox
                 v-model="formData.roomid"
                 :building-id="formData.buildingid"
-                :status="1"
+                :status="0"
                 label="房号"
                 placeholder="请选择房号"
             />
