@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <NuxtLayout>
     <KeepAlive :keepalive>
-      <NuxtLayout>
-        <NuxtPage/>
-      </NuxtLayout>
+      <NuxtPage/>
     </KeepAlive>
-  </div>
+  </NuxtLayout>
 </template>
 <script lang="ts" setup>
 const keepalive = {
