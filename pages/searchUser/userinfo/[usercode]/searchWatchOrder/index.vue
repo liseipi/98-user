@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {DataOriginType, DepositDestinationType, workStatueTypes} from "~/composables/optionsData";
+import {DataOriginType, DepositDestinationType} from "~/composables/optionsData";
 import type {WatchData, WatchDataList} from "~/types/userInfo";
 
 let route = useRoute()

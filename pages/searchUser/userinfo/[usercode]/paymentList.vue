@@ -54,26 +54,25 @@ const onSearch = async () => {
         </button>
       </div>
 
-      <div v-if="list?.length>0"
-           style="-webkit-mask: radial-gradient(circle at bottom center, #0000 7px, red 0); -webkit-mask-position: -40px; -webkit-mask-size:  20px 100%;">
-        <div class="bg-white rounded-md mt-4 p-4"
-             style="-webkit-mask: radial-gradient(circle at left 25%, transparent 12px, red 12px), radial-gradient(circle at right 25%, transparent 12px, red 0); -webkit-mask-size: 51%; -webkit-mask-position: 0, 100%; -webkit-mask-repeat: no-repeat;">
-          <h2 class="text-[#292929] text-[0.8rem] font-bold mb-4">交易明细</h2>
-          <hr class="border-t border-gray-200 border-dashed my-4"/>
-          <div class="grid grid-cols-2 gap-y-2" v-for="item in list" :key="item.id">
-            <div class="text-[0.65rem] text-[#6E7177]">交易单号</div>
-            <div class="text-[#292929] text-[0.7rem]">{{ item.transaction }}</div>
-            <div class="text-[0.65rem] text-[#6E7177]">缴费微信名</div>
-            <div class="text-[#292929] text-[0.7rem]">{{ item.wxname }}</div>
-            <div class="text-[0.65rem] text-[#6E7177]">金额</div>
-            <div class="text-[#292929] text-[0.7rem]">¥ {{ item.amount }}</div>
-            <div class="text-[0.65rem] text-[#6E7177]">支付方式</div>
-            <div class="text-[#292929] text-[0.7rem]">{{ item.paytype }}</div>
-            <div class="text-[0.65rem] text-[#6E7177]">支付时间</div>
-            <div class="text-[#292929] text-[0.7rem]">{{ item.paytime }}</div>
+      <div v-if="list?.length>0" v-for="item in list" :key="item.id">
+        <div style="-webkit-mask: radial-gradient(circle at bottom center, #0000 7px, red 0); -webkit-mask-position: -40px; -webkit-mask-size:  20px 100%;">
+          <div class="bg-white rounded-md mt-4 p-4"
+               style="-webkit-mask: radial-gradient(circle at left 25%, transparent 12px, red 12px), radial-gradient(circle at right 25%, transparent 12px, red 0); -webkit-mask-size: 51%; -webkit-mask-position: 0, 100%; -webkit-mask-repeat: no-repeat;">
+            <h2 class="text-[#292929] text-[0.8rem] font-bold mb-4">交易明细</h2>
+            <hr class="border-t border-gray-200 border-dashed my-4"/>
+            <div class="grid grid-cols-2 gap-y-2">
+              <div class="col-span-2 text-[#292929] text-[0.7rem]">交易单号：{{ item.transaction_id }}</div>
+              <div class="text-[0.65rem] text-[#6E7177]">缴费微信名</div>
+              <div class="text-[#292929] text-[0.7rem]">{{ item.wxname }}</div>
+              <div class="text-[0.65rem] text-[#6E7177]">金额</div>
+              <div class="text-[#292929] text-[0.7rem]">¥ {{ item.money }}</div>
+              <div class="text-[0.65rem] text-[#6E7177]">支付方式</div>
+              <div class="text-[#292929] text-[0.7rem]">{{ item.pay_type }}</div>
+              <div class="text-[0.65rem] text-[#6E7177]">支付时间</div>
+              <div class="text-[#292929] text-[0.7rem]">{{ item.pay_time }}</div>
+            </div>
           </div>
         </div>
-
       </div>
 
     </div>

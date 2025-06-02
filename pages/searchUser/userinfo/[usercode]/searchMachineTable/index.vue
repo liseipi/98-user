@@ -13,6 +13,7 @@ let formData = reactive({
 })
 
 let data = reactive({
+  mechanical: '',
   recentlyreading: '',
   recentlyliters: '',
   recentlytime: ''
@@ -24,9 +25,12 @@ const onSubmit = async () => {
     return;
   }
   let res = await useRequest<MachineTableData>('/wxh5/staff/queryMechanical', {
-    data: {...formData}
+    query: {
+      ...formData
+    }
   })
   if (res.status === 0) {
+    data.mechanical = res.data.mechanical;
     data.recentlyreading = res.data.recentlyreading;
     data.recentlyliters = res.data.recentlyliters;
     data.recentlytime = res.data.recentlytime;
@@ -81,7 +85,7 @@ const onSubmit = async () => {
         <div class="bg-white rounded p-4 mb-2">
           <div class="flex justify-between">
             <p class="txt-gray-7">机械表用量(升)</p>
-            <p class="txt-black-7">{{data.count}}</p>
+            <p class="txt-black-7">{{data.mechanical}}</p>
           </div>
         </div>
         <div class="bg-white rounded mb-2">

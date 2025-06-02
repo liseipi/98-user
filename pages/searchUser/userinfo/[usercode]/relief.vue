@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ReliefReasonType} from "~/composables/optionsData";
+import type {ReduceWaterData, ReduceWaterList} from "~/types/userInfo";
 
 let route = useRoute()
 let usercode = route.params.usercode;
@@ -9,9 +10,24 @@ let formData = reactive({
   reason: ''
 })
 
-let list = ref();
+let page = 1;
+let limit = 20;
+let list = ref<ReduceWaterList[]>([]);
 const getData = async () => {
-
+  let res = await useRequest<ReduceWaterData>('/wxh5/staff/queryExemptionLog', {
+    query: {
+      usercode,
+      page,
+      limit,
+    }
+  });
+  if (res.status == 0) {
+    list.value = res.data.list;
+  } else {
+    showToast({
+      message: res.msg
+    })
+  }
 }
 
 const onSubmit = async () => {
@@ -79,41 +95,14 @@ onMounted(() => {
           </tr>
           </thead>
           <tbody>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">用水故障</td>
-          </tr>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">阀门没开</td>
-          </tr>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">读数不准</td>
-          </tr>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">其他</td>
-          </tr>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">不准</td>
-          </tr>
-          <tr class="border-b hover:bg-gray-100 text-nowrap">
-            <td class="py-2 px-2 txt-black-7">15.433</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">2024-11-09<br>16:32:12</td>
-            <td class="py-2 px-2 txt-black-7">2024-11-09</td>
-            <td class="py-2 px-2 txt-black-7">故障</td>
+          <tr class="border-b hover:bg-gray-100 text-nowrap"
+              v-if="list.length>0"
+              v-for="item in list" :key="item.id"
+          >
+            <td class="py-2 px-2 txt-black-7">{{ item.reductionamount }}</td>
+            <td class="py-2 px-2 txt-black-7 text-nowrap">{{ item.createtime }}</td>
+            <td class="py-2 px-2 txt-black-7">{{ item.charging_time }}</td>
+            <td class="py-2 px-2 txt-black-7">{{ item.reason }}</td>
           </tr>
           </tbody>
         </table>

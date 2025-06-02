@@ -35,9 +35,11 @@ const sendReadingNum = async () => {
   if (res.status === 0) {
     showToast({
       type: 'success',
-      message: '提交成功'
+      message: '提交成功',
+      onClose: () => {
+        location.reload(); //刷新一下页面
+      }
     });
-    readingNum.value = '';
   } else {
     showToast(res.msg);
   }
