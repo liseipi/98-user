@@ -14,6 +14,8 @@ let formData = reactive({
   areaid: '',
   buildingid: '',
   image: '',
+  reading: '',
+  data_time: '',
   newreading: '',
   originalreading: '',
   roomid: '',
@@ -91,11 +93,35 @@ const onSubmit = async () => {
     body: formData,
   });
   if (res.status === 0) {
-
+    showToast({
+      type: 'success',
+      message: res.msg,
+      onClose: () => {
+        location.reload(); //刷新一下页面
+      }
+    })
   } else {
     showToast(res.msg);
   }
 }
+
+const getOriginalreading = async () => {
+  const res = await useRequest('/wxh5/staff/getMechanicalReading', {
+    query: {
+      areaid: formData.areaid,
+      buildingid: formData.buildingid,
+      roomid: formData.roomid,
+    },
+  });
+  if (res.status == 0) {
+    formData.reading = res.data.reading;
+    formData.data_time = res.data.data_time;
+  }
+}
+
+watch(() => formData.roomid, () => {
+  getOriginalreading();
+})
 
 </script>
 
@@ -125,24 +151,26 @@ const onSubmit = async () => {
                 v-model="formData.roomid"
                 :building-id="formData.buildingid"
                 label="房号"
+                required
                 :status="1"
                 placeholder="选择房号"
             />
-<!--            <hr class="border-t border-gray-200"/>-->
-<!--            <div class="flex justify-between items-center">-->
-<!--              <div class="txt-gray-7">门牌</div>-->
-<!--            </div>-->
-<!--            <hr class="border-t border-gray-200"/>-->
-<!--            <SelectBox-->
-<!--                label="用户类型"-->
-<!--                required-->
-<!--                placeholder="请选择用户类型"-->
-<!--                v-model="formData.usertype"-->
-<!--                :options="userType">-->
-<!--            </SelectBox>-->
+            <!--            <hr class="border-t border-gray-200"/>-->
+            <!--            <div class="flex justify-between items-center">-->
+            <!--              <div class="txt-gray-7">门牌</div>-->
+            <!--            </div>-->
+            <!--            <hr class="border-t border-gray-200"/>-->
+            <!--            <SelectBox-->
+            <!--                label="用户类型"-->
+            <!--                required-->
+            <!--                placeholder="请选择用户类型"-->
+            <!--                v-model="formData.usertype"-->
+            <!--                :options="userType">-->
+            <!--            </SelectBox>-->
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">上次抄表</div>
+              <div class="txt-black-7">{{ formData.reading }} {{ formData.data_time }}</div>
             </div>
             <hr class="border-t border-gray-200"/>
             <InputBox

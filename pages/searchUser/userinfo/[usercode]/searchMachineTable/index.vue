@@ -92,16 +92,18 @@ const onSubmit = async () => {
           <table class="w-full table-auto border-collapse">
             <thead>
             <tr class="text-left">
-              <th class="py-2 px-4 txt-black-7">抄表时间</th>
-              <th class="py-2 px-4 txt-black-7">用量</th>
-              <th class="py-2 px-4 txt-black-7">明细</th>
+              <th class="py-2 px-2 txt-black-7">抄表时间</th>
+              <th class="py-2 px-2 txt-black-7">读表数</th>
+              <th class="py-2 px-2 txt-black-7">用量</th>
+              <th class="py-2 px-2 txt-black-7">明细</th>
             </tr>
             </thead>
             <tbody>
             <tr class="border-b hover:bg-gray-100 txt-black-7" v-for="item in list" :key="item.id">
-              <td class="py-2 px-4 txt-black-7">{{item.date}}</td>
-              <td class="py-2 px-4 txt-black-7">{{item.liters}}</td>
-              <td class="py-2 px-4 text-blue-500"><a href="#">查看</a></td>
+              <td class="py-2 px-2 txt-black-7">{{item.date}}</td>
+              <td class="py-2 px-2 txt-black-7">{{item.reading}}</td>
+              <td class="py-2 px-2 txt-black-7">{{item.liters}}</td>
+              <td class="py-2 px-2 text-blue-500"><a href="#">查看</a></td>
             </tr>
             </tbody>
           </table>
