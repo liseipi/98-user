@@ -125,20 +125,21 @@ const onSubmit = async () => {
                 v-model="formData.roomid"
                 :building-id="formData.buildingid"
                 label="房号"
+                :status="1"
                 placeholder="选择房号"
             />
-            <hr class="border-t border-gray-200"/>
-            <div class="flex justify-between items-center">
-              <div class="txt-gray-7">门牌</div>
-            </div>
-            <hr class="border-t border-gray-200"/>
-            <SelectBox
-                label="用户类型"
-                required
-                placeholder="请选择用户类型"
-                v-model="formData.usertype"
-                :options="userType">
-            </SelectBox>
+<!--            <hr class="border-t border-gray-200"/>-->
+<!--            <div class="flex justify-between items-center">-->
+<!--              <div class="txt-gray-7">门牌</div>-->
+<!--            </div>-->
+<!--            <hr class="border-t border-gray-200"/>-->
+<!--            <SelectBox-->
+<!--                label="用户类型"-->
+<!--                required-->
+<!--                placeholder="请选择用户类型"-->
+<!--                v-model="formData.usertype"-->
+<!--                :options="userType">-->
+<!--            </SelectBox>-->
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">上次抄表</div>

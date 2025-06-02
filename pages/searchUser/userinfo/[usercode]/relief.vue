@@ -22,7 +22,7 @@ const getData = async () => {
     }
   });
   if (res.status == 0) {
-    list.value = res.data.list;
+    list.value = res.data;
   } else {
     showToast({
       message: res.msg
@@ -77,35 +77,36 @@ onMounted(() => {
         <hr class="border-t border-gray-200">
         <div class="pt-2">
           <button @click="onSubmit"
-                  class="bg-blue-500 hover:bg-blue-700 text-white text-[0.7rem] py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+              class="bg-blue-500 hover:bg-blue-700 text-white text-[0.7rem] py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
             提交减免
           </button>
         </div>
       </div>
 
-      <h2 class="text-[#292929] text-[0.7rem] mb-2">减免记录</h2>
-      <div class="bg-white rounded overflow-x-auto">
-        <table class="w-full table-auto border-collapse">
-          <thead>
-          <tr class="text-left text-nowrap">
-            <th class="py-2 px-2 txt-gray-7 font-normal">减免量</th>
-            <th class="py-2 px-2 txt-gray-7 font-normal">时间</th>
-            <th class="py-2 px-2 txt-gray-7 font-normal">账期</th>
-            <th class="py-2 px-2 txt-gray-7 font-normal">原因</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr class="border-b hover:bg-gray-100 text-nowrap"
-              v-if="list.length>0"
-              v-for="item in list" :key="item.id"
-          >
-            <td class="py-2 px-2 txt-black-7">{{ item.reductionamount }}</td>
-            <td class="py-2 px-2 txt-black-7 text-nowrap">{{ item.createtime }}</td>
-            <td class="py-2 px-2 txt-black-7">{{ item.charging_time }}</td>
-            <td class="py-2 px-2 txt-black-7">{{ item.reason }}</td>
-          </tr>
-          </tbody>
-        </table>
+      <div v-if="list.length>0">
+        <h2 class="text-[#292929] text-[0.7rem] mb-2">减免记录</h2>
+        <div class="bg-white rounded overflow-x-auto">
+          <table class="w-full table-auto border-collapse">
+            <thead>
+            <tr class="text-left text-nowrap">
+              <th class="py-2 px-2 txt-gray-7 font-normal">减免量</th>
+              <th class="py-2 px-2 txt-gray-7 font-normal">时间</th>
+              <th class="py-2 px-2 txt-gray-7 font-normal">账期</th>
+              <th class="py-2 px-2 txt-gray-7 font-normal">原因</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-b hover:bg-gray-100 text-nowrap"
+                v-for="item in list" :key="item.id"
+            >
+              <td class="py-2 px-2 txt-black-7">{{ item.reductionamount }}</td>
+              <td class="py-2 px-2 txt-black-7 text-nowrap">{{ item.createtime }}</td>
+              <td class="py-2 px-2 txt-black-7">{{ item.charging_time }}</td>
+              <td class="py-2 px-2 txt-black-7">{{ item.reason }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </div>
