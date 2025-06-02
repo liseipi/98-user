@@ -170,7 +170,7 @@ watch(() => formData.roomid, () => {
             <hr class="border-t border-gray-200"/>
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">上次抄表</div>
-              <div class="txt-black-7">{{ formData.reading }} {{ formData.data_time }}</div>
+              <div class="txt-black-7" v-if="formData.data_time">{{ formData.reading }} ({{ formData.data_time }})</div>
             </div>
             <hr class="border-t border-gray-200"/>
             <InputBox

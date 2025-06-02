@@ -27,14 +27,14 @@ let list = ref<SearchWorkList[]>([]);
 
 const scrollContainer = ref<HTMLElement | null>(null)
 let isLoading = ref(false)
-let noMoreData = ref(false);
+let hasMore = ref(true);
 
 const onSubmit = () => {
   if (!formData.starttime || !formData.endtime) {
     showToast({message: '请选择时间段'});
     return;
   } else {
-    page = 1;
+    resetList();
     getData();
   }
 }
@@ -50,63 +50,38 @@ const getData = async () => {
   });
   if (res.status == 0) {
     count.value = res.data.count;
-    list.value = res.data.list;
+    list.value.push(...res.data.list);
     page += 1;
+    if (list.value.length >= res.data.count) {
+      hasMore.value = false;
+    }
   } else {
     showToast(res.msg);
   }
   isLoading.value = false
 }
 
-// 滚动事件监听
-const handleScroll = () => {
-  console.log(111);
-  if (isLoading.value || noMoreData.value || !scrollContainer.value) {
-    return;
-  }
+const reset = useInfiniteScroll(
+    window,
+    () => {
+      if (!scrollContainer.value || isLoading.value || !hasMore.value || page == 1) return
 
-  const element = scrollContainer.value;
-  // 计算滚动条位置是否接近底部
-  const scrollHeight = element.scrollHeight;
-  const clientHeight = element.clientHeight;
-  const scrollTop = element.scrollTop;
-  const threshold = 50; // 离底部多少距离触发加载，可调整
+      const rect = scrollContainer.value.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      if (rect.bottom <= windowHeight + 100) {
+        getData()
+      }
+    },
+    {interval: 300}
+)
 
-  if (scrollHeight - scrollTop - clientHeight <= threshold) {
-    getData();
-  }
-};
-
-// onMounted(() => {
-//   // 添加滚动事件监听器
-//   if (scrollContainer.value) {
-//     scrollContainer.value.addEventListener('scroll', handleScroll);
-//   }
-// });
-
-// useInfiniteScroll(
-//     window,
-//     () => {
-//       if (!scrollContainer.value || isLoading.value || !hasMore.value) return
-//       const rect = scrollContainer.value.getBoundingClientRect()
-//       const windowHeight = window.innerHeight
-//       // 当 scrollContainer 底部进入视口底部 100px 范围内时触发
-//       if (rect.bottom <= windowHeight + 100) {
-//         // loadMore()
-//         console.log(111);
-//       }
-//     },
-//     {
-//       interval: 200, // 防抖 200ms
-//     }
-// )
-
-// onUnmounted(() => {
-//   // 组件卸载时移除事件监听器，防止内存泄漏
-//   if (scrollContainer.value) {
-//     scrollContainer.value.removeEventListener('scroll', handleScroll);
-//   }
-// });
+//重置
+const resetList = () => {
+  page = 1;
+  count.value = 0;
+  list.value = [];
+  hasMore.value = true
+}
 
 </script>
 
