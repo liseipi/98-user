@@ -3,8 +3,6 @@ import AreaBox from "~/components/areaBox.vue";
 import RoomsBox from "~/components/roomsBox.vue";
 import InputBox from "~/components/inputBox.vue";
 import {InstallPosition, InstallType, PowersStatus, userType} from "~/composables/optionsData";
-import {MessageType} from "vscode-languageserver-protocol";
-import Log = MessageType.Log;
 
 useHead({
   titleTemplate: (titleChunk) => {
