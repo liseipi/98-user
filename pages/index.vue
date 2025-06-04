@@ -3,6 +3,7 @@ import {profileStore} from "~/stores/profile";
 import type {Profile} from "~/types/user";
 
 let user = ref<Profile | null>();
+const openid = useCookie('openid');
 
 const getUserInfo = async () => {
   const res = await useRequest('/wxh5/staff/getIndex');
@@ -16,7 +17,9 @@ const getUserInfo = async () => {
 
 onMounted(() => {
   user.value = profileStore().getProfile();
-  getUserInfo();
+  if (openid.value) {
+    getUserInfo();
+  }
 })
 
 </script>

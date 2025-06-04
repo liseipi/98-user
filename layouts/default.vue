@@ -1,11 +1,12 @@
 <template>
-  <slot />
+  <slot/>
 </template>
 
 <script setup lang="ts">
 import {useRequest} from "~/composables/useRequest";
 import {useShareData} from "~/composables/states";
 import type {AuthType} from "~/types/user";
+import {tokenStore} from "~/stores/token";
 
 const wxInitConfig = (shareData) => {
   wx.config({
@@ -64,22 +65,26 @@ const wxInitConfig = (shareData) => {
 }
 
 const init = async () => {
-  const key = useCookie('key');
+  const key = tokenStore().getKey();
   const openid = useCookie('openid');
+  const route = useRoute();
+  const {query} = route;
 
-  //设定初始key的值
-  key.value = 'be39d336d20d1c03ffef35ca39bc1c18';
+  if (query?.key) {
+    // 只判断首页时入时保存key
+    // if (route.path == '/') {}
+    tokenStore().setKey(query.key as string);
+  }
 
   //无openid时
   if (!openid.value) {
     if (process.env.NODE_ENV === 'development') {
       openid.value = 'o-WGWwvPt3UuObAMB7iJaAxt6SGY'
     } else {
-      let url = `/wxh5/user/auth?companykey=${key.value}&callbackurl=${encodeURIComponent(window.location.href)}`;
+      let url = `/wxh5/user/auth?companykey=${key}&callbackurl=${encodeURIComponent(window.location.href)}`;
       const res = await useRequest<AuthType>(url);
       if (res.data) {
-        const response = res.data as AuthType;
-        window.location.href = response.url
+        window.location.href = res.data.url
       }
       return;
     }

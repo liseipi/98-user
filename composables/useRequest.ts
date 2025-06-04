@@ -1,10 +1,9 @@
 import type {ResponseData} from "~/types/global";
+import {tokenStore} from "~/stores/token";
 
 export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
     const config = useRuntimeConfig()
-    const key = useCookie('key')
-    const openid = useCookie('openid')
-    // const accessToken = useCookie('accessToken');
+    const key = tokenStore().getKey();
 
     const defaultOptions: UseFetch0ptions = {
         // baseURL: process.env.NODE_ENV === 'development' ? '' : '', //production or development
@@ -12,20 +11,18 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
         onRequest({options}: { options: any }) {
             options.headers = {
                 ...options.headers,
-                // Authorization: `Bearer ${accessToken}`,
+                // Authorization: `Bearer ${accessToken}`, //测试，没有用到
             }
             options.params = {
                 ...options.params,
             }
             options.query = {
                 ...options.query,
-                key: key.value,
-                // openid: openid.value
+                key: key,
             }
             if (process.env.NODE_ENV === 'development') {
                 options.query = {
                     ...options.query,
-                    openid: 'o-WGWwvPt3UuObAMB7iJaAxt6SGY',
                     debug: 1
                 };
             }
