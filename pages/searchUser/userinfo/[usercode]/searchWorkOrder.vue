@@ -20,6 +20,7 @@ let formData = reactive({
   type: '',
   status: '',
 })
+let waitCount = ref(0)
 let count = ref(0)
 let page = 1;
 let limit = 20;
@@ -50,6 +51,7 @@ const getData = async () => {
   });
   if (res.status == 0) {
     count.value = res.data.count;
+    waitCount.value = res.data.wait_count;
     list.value.push(...res.data.list);
     page += 1;
     if (list.value.length >= res.data.count) {
@@ -118,7 +120,7 @@ const resetList = () => {
           <div class="bg-white rounded p-4 mb-2">
             <div class="grid grid-cols-2 gap-2">
               <div><p class="txt-gray-7">未完成工单总数</p></div>
-              <div class="text-right"><p class="txt-black-7">{{ count }}</p></div>
+              <div class="text-right"><p class="txt-black-7">{{ waitCount }}</p></div>
             </div>
           </div>
         </div>

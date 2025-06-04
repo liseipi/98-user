@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import type {WatchDetail} from "~/types/WatchDetail";
 
-
 let route = useRoute()
 let router = useRouter()
 
 let {id} = route.query;
 let usercode = route.params.usercode;
 
-let list = ref<WatchDetail[]>([])
+let details = ref<WatchDetail|null>(null)
 
 let getData = async () => {
-  let res = await useRequest<WatchDetail[]>('/wxh5/staff/queryWaterUsageDetails', {
+  let res = await useRequest<WatchDetail>('/wxh5/staff/queryWaterUsageDetails', {
     query: {
       logid: id,
       usercode,
     }
   });
   if (res.status === 0) {
-    list.value = res.data;
+    details.value = res.data;
   } else {
     showToast(res.msg);
   }
@@ -33,30 +32,27 @@ onMounted(() => {
 <template>
   <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
-      <div class="bg-white rounded overflow-x-auto">
-        <table class="w-full table-auto border-collapse">
-          <thead>
-          <tr class="text-left">
-            <th class="py-2 px-4 text-nowrap txt-gray-7">上传时间<br>交易时间</th>
-            <th class="py-2 px-4 text-nowrap txt-gray-7">用量<br>笔数</th>
-            <th class="py-2 px-4 text-nowrap txt-gray-7">脉冲数<br>用水时长</th>
-            <th class="py-2 px-4 text-nowrap txt-gray-7">来源<br>入账去向</th>
-            <th class="py-2 px-4 text-nowrap txt-gray-7">帐期</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-if="list.length>0" v-for="(item, index) in list" :key="index" class="border-b hover:bg-gray-100">
-            <td class="py-2 px-4 txt-black-7 font-normal text-nowrap">{{item.createtime}}<br>{{item.tradingtime}}</td>
-            <td class="py-2 px-4 txt-black-7 font-normal text-nowrap">{{item.reading}}<br>{{item.count}}</td>
-            <td class="py-2 px-4 txt-black-7 font-normal text-nowrap">{{item.pulse}}<br>{{item.trx_duration}}</td>
-            <td class="py-2 px-4 txt-black-7 font-normal text-nowrap">{{item.src}}<br>{{item.bill_to}}</td>
-            <td class="py-2 px-4 txt-black-7 font-normal text-nowrap">{{item.charging_time}}</td>
-          </tr>
-          <tr>
-            <td colspan="5" class="py-12 px-4 txt-black-7 font-normal text-nowrap text-center">暂无数据</td>
-          </tr>
-          </tbody>
-        </table>
+      <div v-if="details" class="bg-white rounded overflow-x-auto p-4">
+        <div class="grid grid-cols-2 gap-y-2">
+          <div class="text-[0.65rem] text-[#6E7177]">上传时间</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.createtime }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">交易时间</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.tradingtime }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">用量</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.reading }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">笔数</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.count }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">脉冲数</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.pulse }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">用水时长</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.trx_duration }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">来源</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.src }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">入账去向</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.bill_to }}</div>
+          <div class="text-[0.65rem] text-[#6E7177]">帐期</div>
+          <div class="text-[#292929] text-[0.7rem]">{{ details.charging_time }}</div>
+        </div>
       </div>
     </div>
 

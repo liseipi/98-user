@@ -7,7 +7,7 @@ let usercode = route.params.usercode;
 
 let formData = reactive({
   reductionamount: '',
-  reason: ''
+  reason: 0
 })
 
 let page = 1;
@@ -41,10 +41,17 @@ const onSubmit = async () => {
     body: {
       usercode,
       ...formData,
+      reason: ReliefReasonType.find(item => item.value == formData.reason)?.label
     },
   })
   if (res.status === 0) {
-    showToast(res.msg);
+    showToast({
+      type: 'success',
+      message: res.msg,
+      onClose: () => {
+        location.reload()
+      }
+    });
   } else {
     showToast(res.msg);
   }
@@ -77,7 +84,7 @@ onMounted(() => {
         <hr class="border-t border-gray-200">
         <div class="pt-2">
           <button @click="onSubmit"
-              class="bg-blue-500 hover:bg-blue-700 text-white text-[0.7rem] py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                  class="bg-blue-500 hover:bg-blue-700 text-white text-[0.7rem] py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
             提交减免
           </button>
         </div>

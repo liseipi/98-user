@@ -88,5 +88,6 @@ export interface SearchWorkList {
 
 export interface SearchWorkResponse {
     count: number;
+    wait_count: number;
     list: SearchWorkList[];
 }
