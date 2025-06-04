@@ -4,6 +4,7 @@ import {tokenStore} from "~/stores/token";
 export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
     const config = useRuntimeConfig()
     const key = tokenStore().getKey();
+    const openid = useCookie('openid');
 
     const defaultOptions: UseFetch0ptions = {
         // baseURL: process.env.NODE_ENV === 'development' ? '' : '', //production or development
@@ -23,6 +24,7 @@ export const useRequest = <T>(url: string, opts?: UseFetchoptions) => {
             if (process.env.NODE_ENV === 'development') {
                 options.query = {
                     ...options.query,
+                    openid: openid.value,
                     debug: 1
                 };
             }

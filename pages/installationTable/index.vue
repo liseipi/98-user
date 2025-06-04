@@ -133,12 +133,6 @@ const onSubmit = async () => {
             />
             <hr class="border-t border-gray-200"/>
             <InputBox
-                label="房间"
-                placeholder="请输入房间"
-                v-model="formData.username"
-            />
-            <hr class="border-t border-gray-200"/>
-            <InputBox
                 label="设备编号"
                 placeholder="请输入设备编号"
                 v-model="formData.devicecode"

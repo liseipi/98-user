@@ -7,6 +7,6 @@
 </template>
 <script lang="ts" setup>
 const keepalive = {
-  include: ["searchUser"],
+  include: ["searchUser", "searchWorkOrder"],
 };
 </script>

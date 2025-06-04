@@ -11,6 +11,18 @@ useHead({
   }
 })
 
+definePageMeta({
+  keepalive: true,
+  key: route => route.fullPath // 确保不同参数生成不同缓存
+})
+
+defineOptions({
+  name: 'searchWorkOrder'
+})
+
+const route = useRoute();
+const router = useRouter();
+const {init} = route.query;
 let formData = reactive({
   type: '',
   area: '',
@@ -20,6 +32,7 @@ let formData = reactive({
 
 let status = ref(false)
 let count = ref(0)
+let waitCount = ref(0)
 let page = 1;
 let limit = 20;
 let list = ref<SearchWorkItem[]>([])
@@ -28,7 +41,7 @@ const scrollContainer = ref<HTMLElement | null>(null)
 let isLoading = ref(false)
 let hasMore = ref(true);
 
-const onSearch = async () => {
+const onSearch = () => {
   // if (!formData.type && !formData.area && !formData.buildingid && !formData.roomid) {
   //   showToast('请选择查询条件')
   // }
@@ -48,6 +61,7 @@ const getData = async () => {
   });
   if (res.status === 0) {
     count.value = res.data.count
+    waitCount.value = res.data.wait_count
     list.value.push(...res.data.list);
     page += 1;
     if (list.value.length >= res.data.count) {
@@ -82,6 +96,13 @@ const resetList = () => {
   list.value = [];
   hasMore.value = true
 }
+
+//用于解决keepalive
+onActivated(() => {
+  if (init) {
+    router.replace({path: route.path, query: {reset: String(Date.now())} })
+  }
+})
 
 </script>
 
@@ -125,7 +146,7 @@ const resetList = () => {
         查询的结果为空
       </h3>
 
-      <h3 v-if="list.length>0" class="text-[0.7rem] text-[#292929] mt-4 mb-2">未完成工单总数：{{ count }}</h3>
+      <h3 v-if="list.length>0" class="text-[0.7rem] text-[#292929] mt-4 mb-2">未完成工单总数：{{ waitCount }}</h3>
 
       <div v-if="list.length>0" class="bg-white rounded-md mt-4 p-4">
         <div ref="scrollContainer" class="overflow-x-auto">
@@ -141,13 +162,22 @@ const resetList = () => {
               <th scope="col" class="py-[1rem] pr-2 text-left text-[0.65rem] text-[#6E7177]">
                 描述
               </th>
+              <th scope="col" class="py-[1rem] text-left text-[0.65rem] text-[#6E7177]">
+                查看
+              </th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in list" :key="index">
               <td class="py-[0.35rem] pr-2 w-20 text-wrap whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.createtime }}</td>
-              <td class="py-[0.35rem] pr-2 w-28 text-wrap whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.buildingname }} {{ item.roomname }}</td>
+              <td class="py-[0.35rem] pr-2 w-28 text-wrap whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.buildingname }} {{
+                  item.roomname
+                }}
+              </td>
               <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.remark }}用水 {{ item.mobile }}</td>
+              <td class="py-[0.35rem] whitespace-nowrap text-[0.7rem] text-[#292929]">
+                <NuxtLink class="text-blue-600" :to="`/searchWorkOrder/show?id=${item.id}`">查看</NuxtLink>
+              </td>
             </tr>
             </tbody>
           </table>

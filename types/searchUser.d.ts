@@ -13,7 +13,7 @@ export interface UserInfo  {
   buildingname: string;
   roomname: string;
   intelligentcode: string;
-  valvestatus: string;
+  valvestatus: number;
   username: string;
   usermobile: string;
   mealname: string;

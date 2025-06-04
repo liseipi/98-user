@@ -67,6 +67,10 @@ export const InstallType = [
         value: 2,
         label: '更换'
     },
+    {
+        value: 3,
+        label: '重置'
+    },
 ];
 
 export const InstallPosition = [
@@ -219,3 +223,19 @@ export const HousingStatusType = [
         label: '装修中'
     },
 ];
+
+//阀门状态
+export const ValveStatus = [
+    {
+        value: -1,
+        label: '-'
+    },
+    {
+        value: 0,
+        label: '关阀'
+    },
+    {
+        value: 1,
+        label: '开阀'
+    },
+]

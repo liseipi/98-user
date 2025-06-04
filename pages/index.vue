@@ -42,7 +42,7 @@ onMounted(() => {
             <span class="text-[#626468] text-[0.65rem]">用户查询</span>
           </div>
         </NuxtLink>
-        <NuxtLink to="/searchWorkOrder">
+        <NuxtLink to="/searchWorkOrder?init=1">
           <div class="flex flex-col items-center space-y-2">
             <div class="px-3">
               <img src="@/assets/image/service_02.png" class="w-[1.8rem] h-[2rem]" alt="service">

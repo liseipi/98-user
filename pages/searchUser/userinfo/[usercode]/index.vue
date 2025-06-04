@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {UserInfo} from "~/types/searchUser";
+import {ValveStatus} from "~/composables/optionsData";
 
 let route = useRoute()
 let usercode = route.params.usercode;
@@ -74,7 +75,7 @@ onMounted(() => {
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">阀门状态</span>
-              <span class="txt-black-7">{{ userinfo?.valvestatus == '0' ? '关阀' : '开阀' }}</span>
+              <span class="txt-black-7">{{ValveStatus.find(item => item.value == userinfo?.valvestatus)?.label}}</span>
             </div>
             <div class="flex justify-between items-center border-b border-gray-200 py-2">
               <span class="txt-gray-7">用户</span>
