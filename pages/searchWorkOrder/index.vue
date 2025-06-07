@@ -176,7 +176,7 @@ onActivated(() => {
               </td>
               <td class="py-[0.35rem] pr-2 whitespace-nowrap text-[0.7rem] text-[#292929]">{{ item.remark }}用水 {{ item.mobile }}</td>
               <td class="py-[0.35rem] whitespace-nowrap text-[0.7rem] text-[#292929]">
-                <NuxtLink class="text-blue-600" :to="`/searchWorkOrder/show?id=${item.id}`">查看</NuxtLink>
+                <NuxtLink class="text-blue-600" :to="`/searchWorkOrder/show?id=${item.job_num}`">查看</NuxtLink>
               </td>
             </tr>
             </tbody>
