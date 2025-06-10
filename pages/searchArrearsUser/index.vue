@@ -3,6 +3,7 @@ import InputBox from "~/components/inputBox.vue";
 import RoomsBox from "~/components/roomsBox.vue";
 import AreaBox from "~/components/areaBox.vue";
 import type {ArrearsList, ArrearsUser} from "~/types/searchArrearsUser";
+import {useInfiniteScroll} from "@vueuse/core";
 
 useHead({
   titleTemplate: (titleChunk) => {
@@ -10,13 +11,19 @@ useHead({
   }
 })
 
+let page = 1;
+let limit = 20;
+
 let arrearsamount = ref(0);
 let defaultamount = ref(0);
 let arrearscount = ref(0);
 let totalamount = ref(0);
+
 let list = ref<ArrearsList[]>([]);
 let status = ref(false);
 let isLoading = ref(false);
+const scrollContainer = ref<HTMLElement | null>(null)
+let hasMore = ref(true);
 
 let formData = reactive({
   areaid: '',
@@ -26,21 +33,25 @@ let formData = reactive({
 })
 
 const onSearch = async () => {
+  resetList();
+  getData();
+}
+
+const getData = async () => {
   try {
     isLoading.value = true;
-    let res = await useRequest<ArrearsUser[]>('/wxh5/staff/queryBill', {
-      areaid: formData.areaid,
-      buildingid: formData.areaid,
-      roomid: formData.areaid,
-      usercode: formData.areaid
+    let res = await useRequest<ArrearsUser>('/wxh5/staff/queryBill', {
+      query: {...formData, page, limit}
     });
     if (res.status == 0) {
       arrearsamount.value = res.data.arrearsamount;
       defaultamount.value = res.data.defaultamount;
       arrearscount.value = res.data.arrearscount;
       totalamount.value = res.data.totalamount;
-      list.value = res.data.list as ArrearsList[];
+      list.value.push(...res.data.list);
+      page += 1;
     } else {
+      hasMore.value = false;
       showToast(res.msg)
     }
     status.value = true
@@ -50,11 +61,38 @@ const onSearch = async () => {
   }
 }
 
+//重置
+const resetList = () => {
+  page = 1;
+  arrearsamount.value = 0;
+  defaultamount.value = 0;
+  arrearscount.value = 0;
+  totalamount.value = 0;
+  list.value = [];
+  hasMore.value = true
+}
+
+useInfiniteScroll(
+    window,
+    () => {
+      if (!scrollContainer.value || isLoading.value || !hasMore.value || page == 1) return
+
+      const rect = scrollContainer.value.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      // 当 scrollContainer 底部进入视口底部 100px 范围内时触发
+      if (rect.bottom <= windowHeight + 100) {
+        getData()
+      }
+    },
+    {interval: 300}
+)
+
 </script>
 
 <template>
   <div class="container container-blue-bg">
     <div class="mx-[0.8rem] py-4">
+
       <div class="bg-white rounded-md p-4 grid grid-cols-1 gap-y-2">
         <AreaBox
             v-model="formData.areaid"
@@ -91,6 +129,7 @@ const onSearch = async () => {
 
       <div v-if="list.length>0">
         <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">查询结果</h3>
+
         <div class="bg-white rounded-lg p-4 mb-2">
           <div class="flex justify-between mb-2">
             <p class="txt-gray-7">欠费金额</p>
@@ -110,82 +149,81 @@ const onSearch = async () => {
           </div>
         </div>
 
-        <div class="bg-white rounded-lg py-2 px-2" v-for="(item, index) in list" :key="index">
-          <table class="min-w-full table-auto">
-            <thead class="border-b border-gray-200">
-            <tr>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">房号</th>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">欠费<br>金额</th>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">违约<br>金额</th>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">合计<br>金额</th>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">欠费<br>期数</th>
-              <th class="py-1 px-1 text-center txt-gray-7 font-normal">明细</th>
-            </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-              <td class="py-1 px-1 text-center txt-black-7">{{ item.rommname }}</td>
-              <td class="py-1 px-1 text-center txt-black-7">{{ item.arrearsamount }}</td>
-              <td class="py-1 px-1 text-center txt-black-7">{{ item.defaultamount }}</td>
-              <td class="py-1 px-1 text-center txt-black-7">{{ item.totalamount }}</td>
-              <td class="py-1 px-1 text-center txt-black-7">{{ item.arrearscount }}</td>
-              <td class="py-1 px-1 text-center">
-                <a href="#" class="text-blue-500 hover:underline text-[0.7rem]">查看</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <hr>
-          <table class="min-w-full">
-            <tbody>
-            <tr>
-              <td class="py-1 px-1 text-left">
-                <p class="txt-gray-7">
-                  用户编号
-                  <a href="#" class="text-blue-500 hover:underline text-[0.7rem]">查看</a>
-                </p>
-              </td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">
-                  <span class="txt-black-7">{{ item.detailslist.usercode }}</span>
-                  <span
-                      class="inline-flex items-center px-[0.4rem] py-[0.2rem] text-[#555A60] text-[0.6rem] rounded font-medium bg-gray-200 ml-2">销户</span>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-1 px-1 text-left"><p class="txt-gray-7">用户名</p></td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">{{ item.detailslist.username }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-1 px-1 text-left"><p class="txt-gray-7">手机号</p></td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">{{ item.detailslist.usermobile }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-1 px-1 text-left"><p class="txt-gray-7">欠费金额</p></td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">{{ item.detailslist.itemlist.arrearsamount }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-1 px-1 text-left"><p class="txt-gray-7">违约金额</p></td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">¥ {{ item.detailslist.itemlist.defaultamount }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-1 px-1 text-left"><p class="txt-gray-7">合计金额</p></td>
-              <td class="py-1 px-1 text-right">
-                <p class="txt-black-7">¥ {{ item.detailslist.itemlist.totalamount }}</p>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        <div ref="scrollContainer">
+          <div class="bg-white rounded-lg py-2 px-2 mb-2" v-for="(item, index) in list" :key="index">
+            <table class="min-w-full">
+              <tbody>
+              <tr>
+                <td class="py-1 px-1 text-left">
+                  <p class="txt-gray-7">
+                    用户编号
+                    <!--                  <a href="#" class="text-blue-500 hover:underline text-[0.7rem]">查看</a>-->
+                  </p>
+                </td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">
+                    <span class="txt-black-7">{{ item.usercode }}</span>
+                    <span v-show="item.userstatus == -1"
+                          class="inline-flex items-center px-[0.4rem] py-[0.2rem] text-[#555A60] text-[0.6rem] rounded font-medium bg-gray-200 ml-2">已销户</span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">期数</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">
+                    {{ item.charging_time }}
+                    <NuxtLink :to="`/searchUser/userinfo/${item.usercode}/searchPayment/${item.charging_time}`" class="inline-flex items-center px-[0.4rem] py-[0.2rem] text-white text-[0.6rem] rounded font-medium bg-blue-600 ml-2">查看</NuxtLink>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">楼盘</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">{{ item.building_name }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">房间</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">{{ item.rommname }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">用户名</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">{{ item.name }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">手机号</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">{{ item.mobile }}</p>
+                </td>
+              </tr>
+              <!--            <tr>-->
+              <!--              <td class="py-1 px-1 text-left"><p class="txt-gray-7">欠费金额</p></td>-->
+              <!--              <td class="py-1 px-1 text-right">-->
+              <!--                <p class="txt-black-7">{{ item.arrearsamount }}</p>-->
+              <!--              </td>-->
+              <!--            </tr>-->
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">违约金额</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">¥ {{ item.penalty }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-1 px-1 text-left"><p class="txt-gray-7">合计金额</p></td>
+                <td class="py-1 px-1 text-right">
+                  <p class="txt-black-7">¥ {{ item.total_money }}</p>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
       </div>
     </div>
 

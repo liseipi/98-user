@@ -13,9 +13,9 @@ useHead({
   }
 })
 
-let data = ref<BillDetails>({})
+let data = ref() // <BillDetails> 暂时不用 type
 const getData = async () => {
-  let res = await useRequest<BillDetails>('/wxh5/staff/billDetails', {
+  let res = await useRequest('/wxh5/staff/billDetails', {
     query: {
       usercode: userCode,
       charging_time: month
@@ -53,33 +53,33 @@ const icon = computed(() => data.value?.pay_status == 1 ? paid : pending);
           <hr class="border-t border-dashed border-gray-200 my-4"/>
           <div class="grid grid-cols-2 gap-y-2">
             <div class="text-[#6E7177] text-[0.65rem]">用户地址</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.areaname }} {{ data?.buildingname }} {{ data?.roomname }}</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.user?.area_name }} {{ data?.user?.building_name }} {{ data?.user?.room_name }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">支付项目</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.itemname }}</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.info?.paid_item }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">开始时间</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.strattime }}</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.user?.s_charging_time_text }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">结束时间</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.endtime }}</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.user?.e_charging_time_text }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">上期读数</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.last_num }}升</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.info?.last_num }} 升</div>
             <div class="text-[#6E7177] text-[0.65rem]">本期读数</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.now_num }}升</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.info?.now_num }} 升</div>
             <div class="text-[#6E7177] text-[0.65rem]">减免数 (升)</div>
-            <div class="text-[#222222] text-[0.65rem]">{{ data?.reduction_num }}升</div>
+            <div class="text-[#222222] text-[0.65rem]">{{ data?.user?.reduction_num }}升</div>
             <div class="text-[#6E7177] text-[0.65rem]">水费金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥ {{ data?.wateramount }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.user?.water }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">优惠金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥ {{ data?.discount_money }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.info?.discount_money }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">赠送金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.gift_amount }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.user?.gift_amount }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">充值金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥ {{ data?.recharge }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.user?.recharge }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">应缴金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.money }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.info?.money }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">违约金 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.penalty }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.info?.penalty }}</div>
             <div class="text-[#6E7177] text-[0.65rem]">合计应缴金额 (元)</div>
-            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.totalamount }}</div>
+            <div class="text-[#222222] text-[0.65rem]">¥{{ data?.info?.totalmoney }}</div>
           </div>
 
           <div class="h-4"></div>

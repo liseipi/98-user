@@ -5,21 +5,17 @@ export interface ArrearsItemlist {
     totalamount: number;
 }
 
-export interface ArrearsDetailslist {
-    usercode: string;
-    userstatus: string;
-    username: string;
-    usermobile: string;
-    itemlist: ArrearsItemlist;
-}
-
 export interface ArrearsList {
+    building_name: string;
+    room_code: string;
+    usercode: string;
     rommname: string;
-    arrearsamount: number;
-    defaultamount: number;
-    totalamount: number;
-    arrearscount: number;
-    detailslist: ArrearsDetailslist;
+    name: string;
+    mobile: string;
+    userstatus: number;
+    charging_time: string;
+    total_money: string;
+    penalty: string;
 }
 
 export interface ArrearsUser {
@@ -27,5 +23,5 @@ export interface ArrearsUser {
     defaultamount: number;
     arrearscount: number;
     totalamount: number;
-    list: ArrearsList;
+    list: ArrearsList[];
 }
