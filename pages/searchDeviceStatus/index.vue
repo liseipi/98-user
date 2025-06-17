@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import type {SearchDeviceStatusItem} from "~/types/searchDeviceStatus";
+// import type {SearchDeviceStatusItem} from '~/types/searchDeviceStatus'
 
 useHead({
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - 设备状态查询` : '设备状态查询';
+    return titleChunk ? `${titleChunk} - 设备状态查询` : '设备状态查询'
   }
 })
 
 let devicecode = ref('')
-let list = ref<SearchDeviceStatusItem[]>([])
+let list = ref<object | null>(null)
 let status = ref(false)
 let isLoading = ref(false)
 
 const onSearch = async () => {
   try {
     isLoading.value = true
-    let res = await useRequest<SearchDeviceStatusItem[]>('/wxh5/staff/queryEquipmentStatus', {
+    let res = await useRequest('/wxh5/staff/queryEquipmentStatus', {
       query: {devicecode: devicecode.value}
-    });
+    })
     if (res.status == 0) {
-      list.value = res.data;
+      list.value = res.data as object
     }
     status.value = true
     isLoading.value = false
@@ -27,6 +27,27 @@ const onSearch = async () => {
     console.log(e)
   }
 
+}
+
+// 切换开关
+const handleSwitchChange = async (val: boolean | number) => {
+  let res = await useRequest('/wxh5/staff/setValveStatus', {
+    query: {devicecode: list.value?.dev_code, valvestatus: val ? 1 : 0}
+  })
+  showToast(res.msg)
+}
+
+// 调表
+let isShow = ref(false)
+let reading = ref()
+const onSubmit = async () => {
+  let res = await useRequest('/wxh5/staff/setTotalReading', {
+    query: {devicecode: list.value?.dev_code, totalreading: reading.value}
+  })
+  if (res.status == 0) {
+    isShow.value = false
+  }
+  showToast(res.msg)
 }
 
 </script>
@@ -48,60 +69,59 @@ const onSearch = async () => {
         </div>
 
         <!--空时-->
-        <div class="flex-1 mt-4" v-if="status&&list.length==0">
+        <div class="flex-1 mt-4" v-if="status&&!list">
           <div class="flex flex-col items-center mt-[20%]">
             <img src="@/assets/image/empty.png" class="w-[3.7rem] h-[3.7rem]" alt="empty">
             <span class="txt-black-7 mt-2">输入设备号查询</span>
           </div>
         </div>
 
-        <div class="flex-1 mt-4" v-if="list.length>0">
+        <div class="flex-1 mt-4" v-if="list">
           <h2 class="text-[#292929] text-[0.7rem] mb-2">查询结果</h2>
 
-          <div class="bg-white shadow-md rounded-lg p-4" v-for="(item, index) in list" :key="index">
+          <div class="bg-white shadow-md rounded-lg p-4">
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">最近联络时间</div>
-                <div class="txt-black-7">{{ item.lasttime }}</div>
+                <div class="txt-black-7">{{ list.last_seen }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">脉冲比例</div>
-                <div class="txt-black-7">{{ item.pulseratio }}</div>
+                <div class="txt-black-7">{{ list.pulse_ratio }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">讯号强度</div>
-                <div class="txt-black-7">{{ item.signalstrength }}</div>
+                <div class="txt-black-7">{{ list.signal }}</div>
               </div>
             </div>
 
             <div class="border-b border-gray-200 py-2">
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">电池电压(V)</div>
-                <div class="txt-black-7">{{ item.batteryvoltage }}</div>
+                <div class="txt-black-7">{{ list.voltage }}</div>
               </div>
             </div>
 
-            <div class="border-b border-gray-200 py-2">
+            <div class="border-b border-gray-200 py-2" v-if="(list.dev_type=='GUOXIN'||list.dev_type=='ZHONGKE')&&list.valve_status==''">
               <div class="flex justify-between items-center">
-                <div class="txt-gray-7">阀门状态/时间</div>
+                <div class="txt-gray-7">阀门状态</div>
                 <div class="flex items-center space-x-2">
-                  <div class="">
-                    <div class="txt-black-7">{{ item.valvestatus == 0 ? '关闭' : '开启' }}</div>
-                    <div class="txt-black-7">{{ item.updatetime }}</div>
-                  </div>
-                  <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="toggle" id="toggle"
-                           class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                    <label for="toggle"
-                           class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                  </div>
+                  <div class="txt-black-7">{{ list.valve_status == 1 ? '开启' : '关闭' }}</div>
+                  <Switch v-model="list.valve_status" @update:model-value="handleSwitchChange"></Switch>
                 </div>
+              </div>
+            </div>
+
+            <div class="border-b border-gray-200 py-2" v-if="(list.dev_type=='GUOXIN'||list.dev_type=='ZHONGKE')&&list.valve_status==''">
+              <div class="flex justify-between items-center">
+                <div class="txt-gray-7">时间</div>
+                <div class="txt-black-7">{{ list.valve_chg_time }}</div>
               </div>
             </div>
 
@@ -109,10 +129,36 @@ const onSearch = async () => {
               <div class="flex justify-between items-center">
                 <div class="txt-gray-7">累计数</div>
                 <div class="flex items-center space-x-2">
-                  <div class="txt-black-7">{{ item.totalreading }}</div>
-                  <button class="bg-[#E3EEFF] text-[#3789FF] text-[0.7rem] rounded-md px-[0.6rem] py-[0.23rem]">调表</button>
+                  <div class="txt-black-7">{{ list.last_reading }}</div>
+                  <button @click="isShow=!isShow" class="bg-[#E3EEFF] text-[#3789FF] text-[0.7rem] rounded-md px-[0.6rem] py-[0.23rem]">调表</button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-show="isShow" class="fixed inset-0 bg-gray-900 bg-opacity-85 flex justify-center items-center">
+          <div class="bg-white px-[1rem] py-4 rounded-lg shadow-xl max-w-md relative">
+            <div @click="isShow=false" class="absolute top-2 right-2 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                   stroke="currentColor" class="w-6 h-6 text-gray-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+            <h2 class="text-[0.8rem] text-[#292929] font-bold text-center py-6 flex items-center justify-center">调表度数</h2>
+            <div class="flex flex-col items-center txt-black-7 space-y-2">
+              <span>原表数{{ list?.last_reading }}</span>
+              <span>设备{{ list?.dev_code }}新的调表数</span>
+              <span><input v-model="reading" type="number" class="border border-blue-300 rounded-sm p-1 "/></span>
+            </div>
+            <div class="flex justify-center space-x-3 mt-6 w-[14rem]">
+              <button @click="onSubmit" class="flex-1 bg-blue-500 hover:bg-blue-700 text-white text-[0.8rem] py-[0.55rem] px-6 rounded">
+                确定
+              </button>
+              <button @click="isShow=false"
+                      class="flex-1 bg-gray-200 hover:bg-gray-300 text-[#292929] text-[0.7rem] text-[0.8rem] py-[0.55rem] px-6 rounded">
+                取消
+              </button>
             </div>
           </div>
         </div>

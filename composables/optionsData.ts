@@ -1,27 +1,26 @@
-
 //工单状态 0=待接单,1=已接单,2=已完成,3=已回访,-1=已拒绝
 export const workStatueTypes = [
     {
         value: 0,
-        label: '待接单',
+        label: '待接单'
     },
     {
         value: 1,
-        label: '已接单',
+        label: '已接单'
     },
     {
         value: 2,
-        label: '已完成',
+        label: '已完成'
     },
     {
         value: 3,
-        label: '已回访',
+        label: '已回访'
     },
     {
         value: -1,
-        label: '已拒绝',
-    },
-];
+        label: '已拒绝'
+    }
+]
 
 export const userType = [
     {
@@ -31,8 +30,8 @@ export const userType = [
     {
         value: 2,
         label: '租户'
-    },
-];
+    }
+]
 
 //是否开票
 export const invoicingType = [
@@ -43,8 +42,8 @@ export const invoicingType = [
     {
         value: 1,
         label: '是'
-    },
-];
+    }
+]
 
 //是否安装智能水表
 export const IsInstallType = [
@@ -55,8 +54,8 @@ export const IsInstallType = [
     {
         value: 1,
         label: '是'
-    },
-];
+    }
+]
 
 export const InstallType = [
     {
@@ -70,8 +69,8 @@ export const InstallType = [
     {
         value: 3,
         label: '重置'
-    },
-];
+    }
+]
 
 export const InstallPosition = [
     {
@@ -89,8 +88,8 @@ export const InstallPosition = [
     {
         value: 4,
         label: '室外'
-    },
-];
+    }
+]
 
 export const PowerType = [
     {
@@ -100,8 +99,8 @@ export const PowerType = [
     {
         value: 2,
         label: '常电'
-    },
-];
+    }
+]
 
 export const PowersStatus = [
     {
@@ -111,10 +110,31 @@ export const PowersStatus = [
     {
         value: 2,
         label: '断电'
-    },
-];
+    }
+]
 
+//指令类型
 export const CommandType = [
+    {
+        value: 0,
+        label: '不分类型'
+    },
+    {
+        value: 'open_valve',
+        label: '开阀'
+    },
+    {
+        value: 'close_valve',
+        label: '关阀'
+    },
+    {
+        value: 'cal_meter',
+        label: '调表'
+    }
+]
+//处理结果
+export const DoneType = [
+
     {
         value: 1,
         label: '不指定'
@@ -138,27 +158,8 @@ export const CommandType = [
     {
         value: 6,
         label: '撤销'
-    },
-];
-
-export const DoneType = [
-    {
-        value: 1,
-        label: '不分类型'
-    },
-    {
-        value: 2,
-        label: '开阀'
-    },
-    {
-        value: 3,
-        label: '关阀'
-    },
-    {
-        value: 4,
-        label: '调表'
-    },
-];
+    }
+]
 
 //用水减免类型
 export const ReliefReasonType = [
@@ -221,8 +222,8 @@ export const HousingStatusType = [
     {
         value: 3,
         label: '装修中'
-    },
-];
+    }
+]
 
 //阀门状态
 export const ValveStatus = [
@@ -237,5 +238,5 @@ export const ValveStatus = [
     {
         value: 1,
         label: '开阀'
-    },
+    }
 ]

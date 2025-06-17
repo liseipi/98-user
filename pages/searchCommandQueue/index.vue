@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import {Popup} from 'vant';
-import {CommandType, userType} from "~/composables/optionsData";
-import InputBox from "~/components/inputBox.vue";
-import type {CommandList, CommandQueue} from "~/types/searchCommandQueue";
+import {Popup} from 'vant'
+import {CommandType, userType} from '~/composables/optionsData'
+import InputBox from '~/components/inputBox.vue'
+import type {CommandList, CommandQueue} from '~/types/searchCommandQueue'
 
 useHead({
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - 指令队列` : '指令队列';
+    return titleChunk ? `${titleChunk} - 指令队列` : '指令队列'
   }
 })
 
-let count = ref(0);
-let list = ref<CommandList[]>([]);
-let status = ref(false);
-let isLoading = ref(false);
+let count = ref(0)
+let list = ref<CommandList[]>([])
+let status = ref(false)
+let isLoading = ref(false)
 
 let formData = reactive({
   starttime: '',
   endtime: '',
   type: '',
   status: '',
-  devicecode: '',
+  devicecode: ''
 })
 
 const onSearch = async () => {
   try {
-    isLoading.value = true;
+    isLoading.value = true
     let res = await useRequest<CommandQueue>('/wxh5/staff/queryInstructionQueue', {
       query: {
         starttime: formData.starttime,
         endtime: formData.endtime,
         type: formData.type,
         status: formData.status,
-        devicecode: formData.devicecode,
+        devicecode: formData.devicecode
       }
-    });
+    })
     if (res.status === 0) {
-      count.value = res.data.count;
-      list.value = res.data.list;
+      count.value = res.data.count
+      list.value = res.data.list
     } else {
-      showToast(res.msg);
+      showToast(res.msg)
     }
     status.value = true
     isLoading.value = false
@@ -53,15 +53,13 @@ const onCancel = async (item) => {
     let res = await useRequest('/wxh5/staff/cancelInstruction', {
       query: {
         devicecode: item.devicecode,
-        id: item.id,
+        id: item.id
       }
-    });
+    })
     if (res.status === 0) {
-      showToast('撤销完成')
-      await onSearch(); //更新查询
-    } else {
-      showToast(res.msg);
+      await onSearch() //更新查询
     }
+    showToast(res.msg)
   } catch (e) {
     console.log(e)
   }
