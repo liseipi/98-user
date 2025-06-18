@@ -48,12 +48,12 @@ const onSearch = async () => {
   }
 }
 
-const onCancel = async (item) => {
+const onCancel = async (item: CommandList) => {
   try {
     let res = await useRequest('/wxh5/staff/cancelInstruction', {
       query: {
-        devicecode: item.devicecode,
-        id: item.id
+        devicecode: item.devCode,
+        id: item.uid
       }
     })
     if (res.status === 0) {
@@ -105,35 +105,35 @@ const onCancel = async (item) => {
       <div v-if="list.length>0">
         <h3 class="text-[0.7rem] text-[#292929] mt-4 mb-2">未完成指令总数：{{ count }}</h3>
 
-        <div class="bg-white shadow-md rounded-lg px-4 py-3" v-for="item in list" :key="item.id">
+        <div class="bg-white shadow-md rounded-lg px-4 py-3 mb-3" v-for="item in list" :key="item.uid">
           <div class="border-b border-gray-200 py-3">
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">创建时间</div>
-              <div class="txt-black-7">{{ item.createtime }}</div>
+              <div class="txt-black-7">{{ item.createTime }}</div>
             </div>
           </div>
           <div class="border-b border-gray-200 py-3">
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">设备编号</div>
-              <div class="txt-black-7">{{ item.devicecode }}</div>
+              <div class="txt-black-7">{{ item.devCode }}</div>
             </div>
           </div>
           <div class="border-b border-gray-200 py-3">
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">指令类型</div>
-              <div class="txt-black-7">{{ item.type }}</div>
+              <div class="txt-black-7">{{ item.cmd }}</div>
             </div>
           </div>
           <div class="border-b border-gray-200 py-3">
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">完成情况</div>
-              <div class="txt-black-7">{{ item.status }}</div>
+              <div class="txt-black-7">{{ item.result }}</div>
             </div>
           </div>
           <div class="border-b border-gray-200 py-3">
             <div class="flex justify-between items-center">
               <div class="txt-gray-7">处理时间</div>
-              <div class="txt-black-7">{{ item.dealtime }}</div>
+              <div class="txt-black-7">{{ item.processTime }}</div>
             </div>
           </div>
 

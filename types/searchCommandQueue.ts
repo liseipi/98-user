@@ -1,10 +1,11 @@
 export interface CommandList {
-  id: string;
-  createtime: string;
-  devicecode: string;
-  type: string;
-  status: string;
-  dealtime: string;
+  uid: string;
+  cmd: string;
+  createTime: string;
+  devCode: string;
+  processTime: string;
+  result: string;
+  revoke: string;
 }
 
 export interface CommandQueue {
